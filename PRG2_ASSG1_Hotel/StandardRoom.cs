@@ -8,14 +8,12 @@ namespace PRG2_ASSG1_Hotel
 {
     internal class StandardRoom:Room
     {
-        public bool RequireWifi { get; set; }
-        public bool RequireBreakfast { get; set; }
+        public bool RequireWifi { get; set; } = false;
+        public bool RequireBreakfast { get; set; } = false;
 
         public StandardRoom() { }
-        public StandardRoom(int rn, string bc, double dr, bool ia, bool rw, bool rb) : base(rn, bc, dr, ia)
+        public StandardRoom(int rn, string bc, double dr, bool ia) : base(rn, bc, dr, ia)
         {
-            RequireWifi = rw;
-            RequireBreakfast = rb;
         }
 
         public override double CalculateCharges()

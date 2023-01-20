@@ -8,12 +8,11 @@ namespace PRG2_ASSG1_Hotel
 {
     internal class DeluxeRoom:Room
     {
-        public bool AdditionalBed { get; set; }
+        public bool AdditionalBed { get; set; } = false;
 
         public DeluxeRoom() { }
-        public DeluxeRoom(int rn, string bc, double dr, bool ia, bool ab) : base(rn, bc, dr, ia)
+        public DeluxeRoom(int rn, string bc, double dr, bool ia) : base(rn, bc, dr, ia)
         {
-            AdditionalBed = ab;
         }
 
         public override double CalculateCharges()
