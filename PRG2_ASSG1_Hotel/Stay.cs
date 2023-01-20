@@ -11,7 +11,7 @@ namespace PRG2_ASSG1_Hotel
         public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
 
-        public List<Room> roomList { get; set; } = new List<Room>();
+        public List<Room> RoomList { get; set; } = new List<Room>();
 
         public Stay() { }
         public Stay(DateTime cid, DateTime cod)
@@ -22,17 +22,32 @@ namespace PRG2_ASSG1_Hotel
 
         public void AddRoom(Room room)
         {
-            roomList.Add(room);
+            RoomList.Add(room);
         }
 
         public double CalculateTotal()
         {
-            return 0;
+            double total = 0;
+            if (RoomList.Count() < 0)
+            {
+                return 0;
+            }
+            foreach (Room room in RoomList)
+            {
+                total += room.CalculateCharges();
+            }
+            return total * ((CheckOutDate- CheckInDate).TotalDays);
         }
 
         public override string ToString()
         {
-            return base.ToString();
+            string returnstring = "";
+            returnstring += $"CheckInDate: {CheckInDate.ToString()}, CheckOutDate: {CheckOutDate.ToString()}";
+            foreach (Room room in RoomList)
+            {
+                returnstring += room.ToString();
+            }
+            return returnstring;
         }
     }
 }
