@@ -18,19 +18,32 @@ namespace PRG2_ASSG1_Hotel
             Points = p;
         }
 
-        public double EarnPoints()
+        public double EarnPoints(double spent)
         {
-            return 0;
+            Points += Convert.ToInt32(spent / 10);
+            return Points;
         }
 
-        public bool RedeemPoints()
+        public bool RedeemPoints(int redpoint)
         {
-            return false;
+            if (Points < 0)
+            {
+                return false;
+            }
+            else if (redpoint > Points)
+            {
+                return false;
+            }
+            else
+            {
+                Points -= redpoint;
+                return true;
+            }
         }
 
         public override string ToString()
         {
-            return base.ToString();
+            return $"Status: {Status}, Points: {Points}";
         }
     }
 }
