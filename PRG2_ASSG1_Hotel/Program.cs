@@ -31,6 +31,12 @@ void InitData()
         //Adding data into list
         stayslist.Add(values);
     }
+    foreach (List<string> guest in guestlist)
+    {
+        Membership membership = new Membership();
+        Stay stay = new Stay();
+        guestList.Add(new Guest(guest[0], guest[1], stay, membership));
+    }
 }
 
 void DisplayGuest(List<Guest> guestList)
