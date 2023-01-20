@@ -60,11 +60,11 @@ void DisplayRoom(List<Room> roomList)
 
 int entOpt;
 InitData();
-try
-{
-    while (true)
-    {
 
+while (true)
+{
+    try
+    {
         Console.WriteLine("\n------ Hotel Guest Management System ------");
         Console.WriteLine("[1]. Display all guests\n[2]. Display all available rooms\n[3]. Register guest\n[4]. Check-in guest\n[5]. Display all details for guest\n[6]. Extend days for stay\n[0]. Quit Hotal Guest Management System");
         Console.Write("-------------------------------------------\nPlease enter your option: ");
@@ -103,11 +103,16 @@ try
             Console.WriteLine("\nPlease enter a numeric value from 0 - 6");
         }
     }
+    catch (FormatException ex)
+    {
+        Console.WriteLine($"Incorrect values! {ex.Message} Please try again.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("\nPlease enter the correct value format and try again. The option only accept numeric values from 0 - 6");
+    }
 }
-catch (Exception ex)
-{
-    Console.WriteLine("\nPlease enter the correct value format and try again. The option only accept numeric values from 0 - 6");
-}
+
 
 
 
