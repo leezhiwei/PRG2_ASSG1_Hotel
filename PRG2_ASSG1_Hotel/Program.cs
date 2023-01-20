@@ -4,15 +4,32 @@ using PRG2_ASSG1_Hotel;
 
 List<Guest> guestList = new List<Guest>();
 
-void InitGuest(List<Guest> guestList)
+void InitData()
 {
+    List<List<string>> roomlist = new List<List<string>>();
+    List<List<string>> guestlist = new List<List<string>>();
+    List<List<string>> stayslist = new List<List<string>>();
     //Reading data from csv
-    string[] csvLines = File.ReadAllLines("Guests.csv");
-    for (int i = 1; i < csvLines.Length; i++)
+    string[] roomdata = File.ReadAllLines("Rooms.csv");
+    string[] guestdata = File.ReadAllLines("Guests.csv");
+    string[] staysdata = File.ReadAllLines("Stays.csv");
+    for (int i = 1; i < roomdata.Length; i++)
     {
-        string[] values = csvLines[i].Split(',');
+        List<string> values = roomdata[i].Split(',').ToList();
         //Adding data into list
-        guestList.Add(new Guest(values[0], values[1], values[2], values[3]));
+        roomlist.Add(values);
+    }
+    for (int i = 1; i < guestdata.Length; i++)
+    {
+        List<string> values = guestdata[i].Split(',').ToList();
+        //Adding data into list
+        guestlist.Add(values);
+    }
+    for (int i = 1; i < staysdata.Length; i++)
+    {
+        List<string> values = staysdata[i].Split(',').ToList();
+        //Adding data into list
+        stayslist.Add(values);
     }
 }
 
@@ -20,11 +37,10 @@ void DisplayGuest(List<Guest> guestList)
 {
     foreach (Guest g in guestList)
     {
-        Console.Writeline(g.ToString());    
+        Console.WriteLine(g.ToString());    
     }
 }
 
 
-InitGuest(guestList);
+InitData();
 DisplayGuest(guestList);
-
