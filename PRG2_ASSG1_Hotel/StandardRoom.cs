@@ -12,22 +12,31 @@ namespace PRG2_ASSG1_Hotel
         public bool RequireBreakfast { get; set; }
 
         public StandardRoom() { }
-        public StandardRoom(int rn, string bc, double dr, bool ia) : base(rn, bc, dr, ia)
+        public StandardRoom(int rn, string bc, double dr, bool ia, bool rw, bool rb) : base(rn, bc, dr, ia)
         {
-            RoomNumber = rn;
-            BedConfiguration = bc;
-            DailyRate = dr;
-            isAvail = ia;
+            RequireWifi = rw;
+            RequireBreakfast = rb;
         }
 
-        public double CalculateCharges()
+        public override double CalculateCharges()
         {
-            return 0;
+            double perdaycharge = 0;
+            if (RequireWifi)
+            {
+                perdaycharge += 10;
+            }
+            if (RequireBreakfast)
+            {
+                perdaycharge += 20;
+            }
+            perdaycharge += DailyRate;
+            return perdaycharge;
+
         }
 
         public override string ToString()
         {
-            return base.ToString();
+            return base.ToString() + $" RequireWifi: {RequireWifi}, RequireBreakFast: {RequireBreakfast}";
         }
     }
 }

@@ -11,21 +11,24 @@ namespace PRG2_ASSG1_Hotel
         public bool AdditionalBed { get; set; }
 
         public DeluxeRoom() { }
-        public DeluxeRoom(int rn, string bc, double dr, bool ia) : base(rn, bc, dr, ia)
+        public DeluxeRoom(int rn, string bc, double dr, bool ia, bool ab) : base(rn, bc, dr, ia)
         {
-            RoomNumber = rn;
-            BedConfiguration = bc;
-            DailyRate = dr;
-            isAvail = ia;
+            AdditionalBed = ab;
         }
 
-        public double CalculateCharges()
+        public override double CalculateCharges()
         {
-            return 0;
+            double charge = 0;
+            if (AdditionalBed)
+            {
+                charge += 25;
+            }
+            charge += DailyRate;
+            return charge;
         }
         public override string ToString()
         {
-            return base.ToString();
+            return base.ToString() + $" AdditionalBed: {AdditionalBed}";
         }
     }
 }
