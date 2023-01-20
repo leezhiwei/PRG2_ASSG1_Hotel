@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace PRG2_ASSG1_Hotel
 {
-    internal class Room
+    internal abstract class Room
     {
         public int RoomNumber { get; set; }
         public string BedConfiguration { get; set; }
         public double DailyRate { get; set; }
-        public bool isAvail { get; set; }
+        public bool IsAvail { get; set; }
 
         public Room() { }
         public Room(int rn, string bc, double dr, bool ia)
@@ -19,17 +19,14 @@ namespace PRG2_ASSG1_Hotel
             RoomNumber = rn;
             BedConfiguration = bc;
             DailyRate = dr;
-            isAvail = ia;
+            IsAvail = ia;
         }
 
-        public double CalculateCharges()
-        {
-            return 0;
-        }
+        public abstract double CalculateCharges();
 
         public override string ToString()
         {
-            return base.ToString();
+            return $"RoomNo: {RoomNumber}, BedConfig: {BedConfiguration}, DailyRate: ${DailyRate:2F}, IsAvail: {IsAvail}";
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PRG2_ASSG1_Hotel
 {
-    internal class DeluxeRoom
+    internal class DeluxeRoom:Room
     {
         public bool AdditionalBed { get; set; }
 

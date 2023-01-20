@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PRG2_ASSG1_Hotel
 {
-    internal class StandardRoom
+    internal class StandardRoom:Room
     {
         public bool RequireWifi { get; set; }
         public bool RequireBreakfast { get; set; }
