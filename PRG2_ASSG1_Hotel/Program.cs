@@ -1,2 +1,2 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿// Zhi Wei does 2,4,6
+// Jia Xian does 1,3,5
