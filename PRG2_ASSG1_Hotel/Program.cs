@@ -3,7 +3,9 @@
 using PRG2_ASSG1_Hotel;
 
 List<Guest> guestList = new List<Guest>();
+List<Room> roomList = new List<Room>();
 
+//Initialise Data from csv files
 void InitData()
 {
     List<List<string>> roomlist = new List<List<string>>();
@@ -33,10 +35,11 @@ void InitData()
     }
     foreach (List<string> guest in guestlist)
     {
-        Membership membership = new Membership();
+        Membership membership = new Membership(); 
         Stay stay = new Stay();
         guestList.Add(new Guest(guest[0], guest[1], stay, membership));
     }
+
 }
 
 void DisplayGuest(List<Guest> guestList)
@@ -47,6 +50,64 @@ void DisplayGuest(List<Guest> guestList)
     }
 }
 
+void DisplayRoom(List<Room> roomList)
+{
+    foreach (Room r in roomList)
+    {
+        Console.WriteLine(r.ToString());
+    }
+}
 
+int entOpt;
 InitData();
-DisplayGuest(guestList);
+try
+{
+    while (true)
+    {
+
+        Console.WriteLine("\n------ Hotel Guest Management System ------");
+        Console.WriteLine("[1]. Display all guests\n[2]. Display all available rooms\n[3]. Register guest\n[4]. Check-in guest\n[5]. Display all details for guest\n[6]. Extend days for stay\n[0]. Quit Hotal Guest Management System");
+        Console.Write("-------------------------------------------\nPlease enter your option: ");
+        entOpt = Convert.ToInt32(Console.ReadLine());
+        if (entOpt == 0)
+        {
+            break;
+        }
+        else if (entOpt == 1)
+        {
+            Console.WriteLine("\n------ Displaying all guests ------\n");
+            DisplayGuest(guestList);
+        }
+        else if (entOpt == 2)
+        {
+            Console.WriteLine("\n------ Displaying all available rooms ------\n");
+        }
+        else if (entOpt == 3)
+        {
+            Console.WriteLine("\n------ Register Guest ------\n");
+        }
+        else if (entOpt == 4)
+        {
+            Console.WriteLine("\n------ Guest Check-IN ------\n");
+        }
+        else if (entOpt == 5)
+        {
+            Console.WriteLine("\n------ Displaying all details for Guest ------\n");
+        }
+        else if (entOpt == 6)
+        {
+            Console.WriteLine("\n------ Extending days for stay ------\n");
+        }
+        else
+        {
+            Console.WriteLine("\nPlease enter a numeric value from 0 - 6");
+        }
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine("\nPlease enter the correct value format and try again. The option only accept numeric values from 0 - 6");
+}
+
+
+
