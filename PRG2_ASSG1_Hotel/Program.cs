@@ -58,6 +58,20 @@ void DisplayRoom(List<Room> roomList)
     }
 }
 
+void RegisterGuest()
+{
+    string gName;
+    string gPN;
+    Console.WriteLine("Please enter the following information\n");
+    Console.Write("Guest name: ");
+    gName = Console.ReadLine();
+    Console.Write("Guest passport number: ");
+    gPN = Console.ReadLine();
+    Stay stay = new Stay();
+    Membership membership = new Membership();
+    Guest guest = new Guest(gName, gPN, stay, membership);
+}
+
 int entOpt;
 InitData();
 
@@ -84,7 +98,8 @@ while (true)
         }
         else if (entOpt == 3)
         {
-            Console.WriteLine("\n------ Register Guest ------\n");
+            Console.WriteLine("\n------------- Register Guest --------------\n");
+            RegisterGuest();
         }
         else if (entOpt == 4)
         {
@@ -105,11 +120,11 @@ while (true)
     }
     catch (FormatException ex)
     {
-        Console.WriteLine($"Incorrect values! {ex.Message} Please try again.");
+        Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 6");
     }
     catch (Exception ex)
     {
-        Console.WriteLine("\nPlease enter the correct value format and try again. The option only accept numeric values from 0 - 6");
+        Console.WriteLine($"\nPlease enter the correct value format and try again. The option only accept numeric values from 0 - 6");
     }
 }
 
