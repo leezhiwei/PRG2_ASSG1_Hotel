@@ -25,7 +25,7 @@ namespace PRG2_ASSG1_Hotel
 
         public override string ToString()
         {
-            return $"Name: {Name} Passport Number: {PassportNum} Stay: {HotelStay} Member: {Member} Check in status: {IsCheckedin}";
+            return $"Name: {Name}, Passport Number: {PassportNum}, Stay: {HotelStay}, Member: {Member}, Check in status: {IsCheckedin},";
         }
     }
 }
