@@ -31,48 +31,42 @@ void InitData()
         //Adding data into list
         stayslist.Add(values);
     }
-    foreach (List<string> guest in guestlist)
+    foreach (List<string> bookings in stayslist) // iterate through bookinglist
     {
-        Membership membership = new Membership();
-        Stay stay = new Stay();
-        guestList.Add(new Guest(guest[0], guest[1], stay, membership));
-        foreach (List<string> bookings in stayslist) // iterate through bookinglist
+        Stay book = new Stay(Convert.ToDateTime(bookings[3]), Convert.ToDateTime(bookings[4]));
+        foreach (List<string> rooms in roomlist) // iterate through roomslist
         {
-            Stay book = new Stay(Convert.ToDateTime(bookings[3]), Convert.ToDateTime(bookings[4]));
-            foreach (List<string> rooms in roomlist) // iterate through roomslist
+            if (rooms[1] == bookings[5]) // if roomno matches
             {
-                if (rooms[1] == bookings[5]) // if roomno matches
+                if (rooms[0] == "Standard") // if type is standard
                 {
-                    if (rooms[0] == "Standard") // if type is standard
-                    {
-                        StandardRoom room = new StandardRoom(Convert.ToInt32(rooms[1]), rooms[2], Convert.ToDouble(rooms[3]), !(Convert.ToBoolean(bookings[2])));
-                        room.RequireWifi = Convert.ToBoolean(bookings[6]);
-                        room.RequireBreakfast = Convert.ToBoolean(bookings[7]);
-                        book.AddRoom(room);
+                    StandardRoom room = new StandardRoom(Convert.ToInt32(rooms[1]), rooms[2], Convert.ToDouble(rooms[3]), !(Convert.ToBoolean(bookings[2])));
+                    room.RequireWifi = Convert.ToBoolean(bookings[6]);
+                    room.RequireBreakfast = Convert.ToBoolean(bookings[7]);
+                    book.AddRoom(room);
 
-                    }
-                    else if (rooms[0] == "Deluxe") // if type is deluxe
+                }
+                else if (rooms[0] == "Deluxe") // if type is deluxe
+                {
+                    DeluxeRoom room = new DeluxeRoom(Convert.ToInt32(rooms[1]), rooms[2], Convert.ToDouble(rooms[3]), !(Convert.ToBoolean(bookings[2])));
+                    room.AdditionalBed = Convert.ToBoolean(bookings[12]);
+                    book.AddRoom(room);
+                }
+                foreach (List<string> guestprof in guestlist)
+                {
+                    if (guestprof[1] == bookings[1])
                     {
-                        DeluxeRoom room = new DeluxeRoom(Convert.ToInt32(rooms[1]), rooms[2], Convert.ToDouble(rooms[3]), !(Convert.ToBoolean(bookings[2])));
-                        room.AdditionalBed = Convert.ToBoolean(bookings[12]);
-                        book.AddRoom(room);
-                    }
-                    foreach (List<string> guestprof in guestlist)
-                    {
-                        if (guest[1] == bookings[1])
-                        {
-                            Membership m = new Membership(guestprof[2], Convert.ToInt32(guestprof[3]));
-                            Guest guestobj = new Guest(guestprof[0], guestprof[1], book, m);
-                            guestobj.IsCheckedin = Convert.ToBoolean(bookings[2]);
-                            guestList.Add(guestobj);
-                        }
+                        Membership m = new Membership(guestprof[2], Convert.ToInt32(guestprof[3]));
+                        Guest guestobj = new Guest(guestprof[0], guestprof[1], book, m);
+                        guestobj.IsCheckedin = Convert.ToBoolean(bookings[2]);
+                        guestList.Add(guestobj);
                     }
                 }
             }
         }
-
     }
 }
+
 void DisplayGuest(List<Guest> guestList)
 {
     foreach (Guest g in guestList)
@@ -109,7 +103,7 @@ while (true)
 {
     try
     {
-        Console.WriteLine("\n------ Hotel Guest Management System ------");
+        Console.WriteLine("------ Hotel Guest Management System ------");
         Console.WriteLine("[1]. Display all guests\n[2]. Display all available rooms\n[3]. Register guest\n[4]. Check-in guest\n[5]. Display all details for guest\n[6]. Extend days for stay\n[0]. Quit Hotal Guest Management System");
         Console.Write("-------------------------------------------\nPlease enter your option: ");
         entOpt = Convert.ToInt32(Console.ReadLine());
@@ -152,7 +146,7 @@ while (true)
     {
         Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 6");
     }
-    catch (Exception ex)
+    catch
     {
         Console.WriteLine($"\nPlease enter the correct value format and try again. The option only accept numeric values from 0 - 6");
     }
