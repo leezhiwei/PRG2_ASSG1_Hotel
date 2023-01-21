@@ -110,11 +110,84 @@ void RegisterGuest()
     Membership membership = new Membership();
     Guest guest = new Guest(gName, gPN, stay, membership);
 }
+List<Guest> DisplayCIn(List<Guest> guestList)
+ {
+    List<Guest> returnlist = new List<Guest>();
+    int count = 0;
+    foreach (Guest g in guestList)
+    {
+        if (!g.IsCheckedin)
+        {
+            count++;
+            Console.WriteLine($"{count}) {g.ToString()}");
+            returnlist.Add(g);
+        }
+    }
+    return returnlist;
+}
 void ShowAvailRoom(List<Room> rlist)
 {
     foreach (Room r in rlist)
     {
         Console.WriteLine(r.ToString());
+    }
+}
+void CheckIn(List<Guest> glist)
+{
+    int num = 0;
+    while (true)
+    {
+        Guest pickedguest = null;
+        List <Guest> notcheckin = new List<Guest>(DisplayCIn(glist));
+        DateTime cindate = DateTime.Now;
+        DateTime coutdate = DateTime.Now;
+        Console.Write("Enter the number in which you want to check in: ");
+        try
+        {
+            num = Convert.ToInt32(Console.ReadLine());
+        }
+        catch
+        {
+            Console.WriteLine("Please enter a number.");
+            continue;
+        }
+        int index = num - 1;
+        if (index < 0)
+        {
+            Console.WriteLine("Invalid number.");
+            continue;
+        }
+        try
+        {
+            pickedguest = notcheckin[index];
+        }
+        catch
+        {
+            Console.WriteLine("Out of range of list");
+            continue;
+        }
+        Console.Write("Please enter date of Check-In: ");
+        try
+        {
+            cindate = Convert.ToDateTime(Console.ReadLine());
+        }
+        catch
+        {
+            Console.WriteLine("Invalid date format.");
+            continue;
+        }
+        Console.Write("Please enter date of Check-Out: ");
+        try
+        {
+            coutdate = Convert.ToDateTime(Console.ReadLine());
+        }
+        catch
+        {
+            Console.WriteLine("Invalid date format.");
+            continue;
+        }
+        Stay stay = new Stay(cindate, coutdate);
+        List<Room> avroom = AvailRoom();
     }
 }
 
@@ -151,6 +224,7 @@ while (true)
         else if (entOpt == 4)
         {
             Console.WriteLine("\n------ Guest Check-IN ------\n");
+            CheckIn(guestList);
         }
         else if (entOpt == 5)
         {
