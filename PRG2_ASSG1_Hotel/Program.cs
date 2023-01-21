@@ -66,9 +66,23 @@ void InitData()
         }
     }
 }
-
-void DisplayGuest(List<Guest> guestList)
+List<Room> AvailRoom()
 {
+    List<Room> AvailableRms = new List<Room>();
+    foreach (Guest g in guestList)
+    {
+        foreach (Room r in g.HotelStay.RoomList)
+        {
+            if (r.IsAvail)
+            {
+                AvailableRms.Add(r);
+            }
+        }
+    }
+    return AvailableRms;
+}
+void DisplayGuest(List<Guest> guestList)
+ {
     foreach (Guest g in guestList)
     {
         Console.WriteLine(g.ToString());
@@ -96,9 +110,17 @@ void RegisterGuest()
     Membership membership = new Membership();
     Guest guest = new Guest(gName, gPN, stay, membership);
 }
+void ShowAvailRoom(List<Room> rlist)
+{
+    foreach (Room r in rlist)
+    {
+        Console.WriteLine(r.ToString());
+    }
+}
 
 int entOpt;
 InitData();
+List<Room> availrooms = new List<Room>(AvailRoom());
 while (true)
 {
     try
@@ -119,6 +141,7 @@ while (true)
         else if (entOpt == 2)
         {
             Console.WriteLine("\n------ Displaying all available rooms ------\n");
+            ShowAvailRoom(availrooms);
         }
         else if (entOpt == 3)
         {
