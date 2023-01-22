@@ -3,6 +3,8 @@
 using PRG2_ASSG1_Hotel;
 
 List<Guest> guestList = new List<Guest>();
+List<Room> availrooms = new List<Room>();
+List<Room> occupiedrooms = new List<Room>();    
 //Initialise Data from csv files
 void InitData()
 {
@@ -68,6 +70,7 @@ void InitData()
                     room.RequireWifi = Convert.ToBoolean(bookings[6]);
                     room.RequireBreakfast = Convert.ToBoolean(bookings[7]);
                     book.AddRoom(room);
+                    occupiedrooms.Add(room);
 
                 }
                 else if (rooms[0] == "Deluxe") // if type is deluxe
@@ -75,10 +78,12 @@ void InitData()
                     DeluxeRoom room = new DeluxeRoom(Convert.ToInt32(rooms[1]), rooms[2], Convert.ToDouble(rooms[3]), !(Convert.ToBoolean(bookings[2])));
                     room.AdditionalBed = Convert.ToBoolean(bookings[12]);
                     book.AddRoom(room);
+                    occupiedrooms.Add(room);
                 }
                 if (secroom is not null)
                 {
                     book.AddRoom(secroom);
+                    occupiedrooms.Add(secroom);
                 }
                 foreach (List<string> guestprof in guestlist)
                 {
@@ -93,6 +98,48 @@ void InitData()
             }
         }
     }
+    availrooms = AvailRoom();
+    foreach (List<string> ro in roomlist) // add in other avail rooms
+    {
+        bool isInList = false;
+        bool occupied = false;
+        foreach (Room room in availrooms)
+        {
+            if (room.RoomNumber == Convert.ToInt32(ro[1]))
+            {
+                Console.WriteLine(ro[1]);
+                isInList = true;
+                break;
+            }
+        }
+        if (isInList)
+        {
+            continue;
+        }
+        foreach (Room or in occupiedrooms)
+        {
+            if (or.RoomNumber == Convert.ToInt32(ro[1]))
+            {
+                occupied = true;
+                break;
+            }
+        }
+        if (occupied)
+        {
+            continue;
+        }
+        if (ro[0] == "Standard") // if type is standard
+        {
+            StandardRoom room = new StandardRoom(Convert.ToInt32(ro[1]), ro[2], Convert.ToDouble(ro[3]), true);
+            availrooms.Add(room);
+
+        }
+        else if (ro[0] == "Deluxe") // if type is deluxe
+        {
+            DeluxeRoom room = new DeluxeRoom(Convert.ToInt32(ro[1]), ro[2], Convert.ToDouble(ro[3]), true);
+            availrooms.Add(room);
+        }
+    }
 }
 List<Room> AvailRoom()
 {
@@ -101,9 +148,23 @@ List<Room> AvailRoom()
     {
         foreach (Room r in g.HotelStay.RoomList)
         {
-            if (r.IsAvail)
+            Room ro = r;
+            if (ro.IsAvail)
             {
-                AvailableRms.Add(r);
+                if (ro is DeluxeRoom)
+                {
+                    DeluxeRoom dr = (DeluxeRoom)ro;
+                    dr.AdditionalBed = false;
+                    ro = dr;
+                }
+                else if (ro is StandardRoom)
+                {
+                    StandardRoom sr = (StandardRoom)ro;
+                    sr.RequireBreakfast = false;
+                    sr.RequireWifi = false;
+                    ro = sr;
+                }
+                AvailableRms.Add(ro);
             }
         }
     }
@@ -221,7 +282,6 @@ void CheckIn(List<Guest> glist)
 
 int entOpt;
 InitData();
-List<Room> availrooms = new List<Room>(AvailRoom());
 while (true)
 {
     try
