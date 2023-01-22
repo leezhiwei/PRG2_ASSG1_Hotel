@@ -34,10 +34,34 @@ void InitData()
     foreach (List<string> bookings in stayslist) // iterate through bookinglist
     {
         Stay book = new Stay(Convert.ToDateTime(bookings[3]), Convert.ToDateTime(bookings[4]));
+        Room secroom = null;
         foreach (List<string> rooms in roomlist) // iterate through roomslist
         {
-            if (rooms[1] == bookings[5]) // if roomno matches
+            if (rooms[1] == bookings[5]) // if roomno matches first one
             {
+                if (bookings[9] != "") // where roomnum (2nd one) is not empty
+                {
+                    foreach (List<string> r in roomlist) // iterate again
+                    {
+                        if (r[1] == bookings[9]) // if iterate, matches
+                        {
+                            if (r[0] == "Standard") // if type is standard
+                            {
+                                StandardRoom room = new StandardRoom(Convert.ToInt32(r[1]), r[2], Convert.ToDouble(r[3]), !(Convert.ToBoolean(bookings[2])));
+                                room.RequireWifi = Convert.ToBoolean(bookings[10]);
+                                room.RequireBreakfast = Convert.ToBoolean(bookings[11]);
+                                secroom = room;
+
+                            }
+                            else if (rooms[0] == "Deluxe") // if type is deluxe
+                            {
+                                DeluxeRoom room = new DeluxeRoom(Convert.ToInt32(r[1]), r[2], Convert.ToDouble(r[3]), !(Convert.ToBoolean(bookings[2])));
+                                room.AdditionalBed = Convert.ToBoolean(bookings[12]);
+                                secroom = room;
+                            }
+                        }
+                    }
+                }
                 if (rooms[0] == "Standard") // if type is standard
                 {
                     StandardRoom room = new StandardRoom(Convert.ToInt32(rooms[1]), rooms[2], Convert.ToDouble(rooms[3]), !(Convert.ToBoolean(bookings[2])));
@@ -51,6 +75,10 @@ void InitData()
                     DeluxeRoom room = new DeluxeRoom(Convert.ToInt32(rooms[1]), rooms[2], Convert.ToDouble(rooms[3]), !(Convert.ToBoolean(bookings[2])));
                     room.AdditionalBed = Convert.ToBoolean(bookings[12]);
                     book.AddRoom(room);
+                }
+                if (secroom is not null)
+                {
+                    book.AddRoom(secroom);
                 }
                 foreach (List<string> guestprof in guestlist)
                 {
