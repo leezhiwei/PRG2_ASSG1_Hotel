@@ -213,6 +213,21 @@ List<Guest> DisplayCIn(List<Guest> guestList)
     }
     return returnlist;
 }
+List<Guest> DisplayGuestsCIned(List<Guest> guestList)
+{
+    List<Guest> alreadycheckedin = new List<Guest>();
+    int count = 0;
+    foreach (Guest g in guestList)
+    {
+        if (g.IsCheckedin)
+        {
+            alreadycheckedin.Add(g);
+            count++;
+            Console.WriteLine($"{count}) {g.ToString()}");
+        }
+    }
+    return alreadycheckedin;
+}
 Room AvailRoomSel()
 {
     Room finalobj = null;
@@ -406,6 +421,43 @@ void CheckIn(List<Guest> glist)
         break;
     }
 }
+void ExtendStay()
+{
+    List<Guest> checkedin = DisplayGuestsCIned(guestList);
+    Guest pickedg = null;
+    int choice = -1;
+    Console.Write("Please enter which guest to extend stay: ");
+    try
+    {
+        choice = Convert.ToInt32(Console.ReadLine());
+    }
+    catch
+    {
+        Console.WriteLine("Please enter a number.");
+        return;
+    }
+    pickedg = checkedin[choice - 1];
+    if (pickedg.IsCheckedin == false)
+    {
+        Console.WriteLine("You are not checked in yet.");
+        return;
+    }
+    Stay s = pickedg.HotelStay;
+    Console.Write("How many days do you want to extend stay by? ");
+    int days = 0;
+    try
+    {
+        days = Convert.ToInt32(Console.ReadLine());
+    }
+    catch
+    {
+        Console.WriteLine("Please enter a number.");
+        return;
+    }
+    s.CheckOutDate = s.CheckOutDate.AddDays(days);
+    guestList[choice - 1] = pickedg;
+    Console.WriteLine($"Date has been updated to {s.CheckOutDate.ToString()}");
+}
 
 int entOpt;
 InitData();
@@ -448,6 +500,7 @@ while (true)
         else if (entOpt == 6)
         {
             Console.WriteLine("\n------ Extending days for stay ------\n");
+            ExtendStay();
         }
         else
         {
