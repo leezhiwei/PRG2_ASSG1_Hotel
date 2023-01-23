@@ -1,13 +1,10 @@
 ﻿// Zhi Wei does 2,4,6
 // Jia Xian does 1,3,5
 using PRG2_ASSG1_Hotel;
-using System.Runtime.Serialization.Json;
-using System.Security.Cryptography;
 
 List<Guest> guestList = new List<Guest>();
 List<Room> availrooms = new List<Room>();
 List<Room> occupiedrooms = new List<Room>();
-guestList.Add(new Guest("Name123", "S1234567890I", new Stay(), new Membership("Ordinary", 0)));
 //Initialise Data from csv files
 void InitData()
 {
