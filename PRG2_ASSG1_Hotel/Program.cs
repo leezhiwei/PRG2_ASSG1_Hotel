@@ -187,6 +187,15 @@ void DisplayRoom(List<Room> roomList)
 
 void RegisterGuest()
 {
+    List<List<string>> guestlist = new List<List<string>>(); // init string-list var
+    string[] guestdata = File.ReadAllLines("Guests.csv");
+    for (int i = 1; i < guestdata.Length; i++)
+    {
+        List<string> values = guestdata[i].Split(',').ToList();
+        //Adding data into list
+        guestlist.Add(values);
+    }
+
     string gName;
     string gPN;
     Console.WriteLine("Please enter the following information\n");
@@ -194,9 +203,18 @@ void RegisterGuest()
     gName = Console.ReadLine();
     Console.Write("Guest passport number: ");
     gPN = Console.ReadLine();
+
     Stay stay = new Stay();
-    Membership membership = new Membership();
-    Guest guest = new Guest(gName, gPN, stay, membership);
+    Membership membership = new Membership("Ordinary", 0); //Creating a new membership object with ordinary status and 0 points
+    Guest guest = new Guest(gName, gPN, stay, membership); //Creating new guest object
+    guestList.Add(guest); //Adding guest to guestList
+
+    string data = gName + "," + gPN + "," + membership.Status + "," + membership.Points; //Adding guest information into data
+    using (StreamWriter sw = new StreamWriter("Guests.csv", true))
+    {
+        sw.WriteLine(data); //Appending data to Guest.csv
+    }
+    Console.WriteLine($"\nGuest Registration for {gName} is Successful!");
 }
 List<Guest> DisplayCIn(List<Guest> guestList)
 {
