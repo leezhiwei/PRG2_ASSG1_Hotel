@@ -1,10 +1,13 @@
 ﻿// Zhi Wei does 2,4,6
 // Jia Xian does 1,3,5
 using PRG2_ASSG1_Hotel;
+using System.Runtime.Serialization.Json;
+using System.Security.Cryptography;
 
 List<Guest> guestList = new List<Guest>();
 List<Room> availrooms = new List<Room>();
-List<Room> occupiedrooms = new List<Room>();    
+List<Room> occupiedrooms = new List<Room>();
+guestList.Add(new Guest("Name123", "S1234567890I", new Stay(), new Membership("Ordinary", 0)));
 //Initialise Data from csv files
 void InitData()
 {
@@ -107,7 +110,6 @@ void InitData()
         {
             if (room.RoomNumber == Convert.ToInt32(ro[1]))
             {
-                Console.WriteLine(ro[1]);
                 isInList = true;
                 break;
             }
@@ -200,7 +202,7 @@ void RegisterGuest()
     Guest guest = new Guest(gName, gPN, stay, membership);
 }
 List<Guest> DisplayCIn(List<Guest> guestList)
- {
+{
     List<Guest> returnlist = new List<Guest>();
     int count = 0;
     foreach (Guest g in guestList)
@@ -214,6 +216,104 @@ List<Guest> DisplayCIn(List<Guest> guestList)
     }
     return returnlist;
 }
+Room AvailRoomSel()
+{
+    Room finalobj = null;
+    DisplayRmCIn(availrooms);
+    Console.Write("Please select a room: ");
+    int choice = -1;
+    Room chosenr = null;
+    try
+    {
+        choice = Convert.ToInt32(Console.ReadLine());
+    }
+    catch
+    {
+        Console.WriteLine("Please enter a number.");
+        return null;
+    }
+    try
+    {
+        chosenr = availrooms[choice - 1];
+    }
+    catch
+    {
+        Console.WriteLine("You have chosen an invalid option, which is not in list.");
+        return null;
+    }
+    if (chosenr is StandardRoom)
+    {
+        StandardRoom r = (StandardRoom)chosenr;
+        Console.Write("Do you want to have choice of WiFi (Y/N) ");
+        string ch = Console.ReadLine();
+        ch = ch.ToUpper();
+        if (ch == "Y")
+        {
+            r.RequireWifi = true;
+        }
+        else if (ch == "N")
+        {
+            r.RequireWifi = false;
+        }
+        else
+        {
+            Console.WriteLine("You have typed in an invalid option.");
+            return null;
+        }
+        Console.Write("Do you want to have choice of Breakfast (Y/N) ");
+        ch = Console.ReadLine();
+        ch = ch.ToUpper();
+        if (ch == "Y")
+        {
+            r.RequireBreakfast = true;
+        }
+        else if (ch == "N")
+        {
+            r.RequireBreakfast = false;
+        }
+        else
+        {
+            Console.WriteLine("You have typed in an invalid option.");
+            return null;
+        }
+        availrooms.RemoveAt(choice - 1);
+        r.IsAvail = false;
+        finalobj = r;
+    }
+    else if (chosenr is DeluxeRoom)
+    {
+        DeluxeRoom r = (DeluxeRoom)chosenr;
+        Console.Write("Do you want to have additional beds (Y/N) ");
+        string ch = Console.ReadLine();
+        ch = ch.ToUpper();
+        if (ch == "Y")
+        {
+            r.AdditionalBed = true;
+        }
+        else if (ch == "N")
+        {
+            r.AdditionalBed = false;
+        }
+        else
+        {
+            Console.WriteLine("You have typed in an invalid option.");
+            return null;
+        }
+        availrooms.RemoveAt(choice - 1);
+        r.IsAvail = false;
+        finalobj = r;
+    }
+    return finalobj;
+}
+void DisplayRmCIn(List<Room> rlist)
+{
+    int count = 0;
+    foreach (Room r in rlist)
+    {
+        count++;
+        Console.WriteLine($"{count}) {r.ToString()}");
+    }
+}
 void ShowAvailRoom(List<Room> rlist)
 {
     foreach (Room r in rlist)
@@ -226,6 +326,7 @@ void CheckIn(List<Guest> glist)
     int num = 0;
     while (true)
     {
+        Room finalobj = null;
         Guest pickedguest = null;
         List <Guest> notcheckin = new List<Guest>(DisplayCIn(glist));
         DateTime cindate = DateTime.Now;
@@ -276,7 +377,36 @@ void CheckIn(List<Guest> glist)
             continue;
         }
         Stay stay = new Stay(cindate, coutdate);
-        List<Room> avroom = AvailRoom();
+        finalobj = AvailRoomSel();
+        if (finalobj is null)
+        {
+            continue;
+        }
+        stay.AddRoom(finalobj);
+        Console.Write("Do you want to add another room? (Y/N) ");
+        string o = Console.ReadLine();
+        o = o.ToUpper();
+        if (o == "Y")
+        {
+            finalobj = AvailRoomSel();
+            if (finalobj is null)
+            {
+                continue;
+            }
+            stay.AddRoom(finalobj);
+        }
+        else if (o == "N")
+        {
+            Console.WriteLine(); // Do nothing continue to next part
+        }
+        else
+        {
+            Console.WriteLine("You have selected invalid option.");
+        }
+        pickedguest.HotelStay = stay;
+        pickedguest.IsCheckedin = true;
+        Console.WriteLine("You have successfully checked-in!");
+        break;
     }
 }
 
