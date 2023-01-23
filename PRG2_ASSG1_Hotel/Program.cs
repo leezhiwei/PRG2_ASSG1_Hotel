@@ -204,7 +204,7 @@ void RegisterGuest()
     Console.Write("Guest passport number: ");
     gPN = Console.ReadLine();
 
-    Stay stay = new Stay();
+    Stay stay = new Stay(); //Creating empty stay object
     Membership membership = new Membership("Ordinary", 0); //Creating a new membership object with ordinary status and 0 points
     Guest guest = new Guest(gName, gPN, stay, membership); //Creating new guest object
     guestList.Add(guest); //Adding guest to guestList
@@ -439,6 +439,22 @@ void CheckIn(List<Guest> glist)
         break;
     }
 }
+
+void DisplayInfoguest()
+{
+    DisplayGuest(guestList);
+    string gName;
+    Console.Write("\nPlease selected Guest name: ");
+    gName = Console.ReadLine();
+    foreach (Guest g in guestList)
+    {
+        if (gName == g.Name)
+        {
+            Console.WriteLine(g.ToString());
+        }
+    }
+
+}
 void ExtendStay()
 {
     List<Guest> checkedin = DisplayGuestsCIned(guestList);
@@ -514,6 +530,7 @@ while (true)
         else if (entOpt == 5)
         {
             Console.WriteLine("\n------ Displaying all details for Guest ------\n");
+            DisplayInfoguest();
         }
         else if (entOpt == 6)
         {
