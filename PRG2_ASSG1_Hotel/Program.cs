@@ -444,16 +444,28 @@ void DisplayInfoguest()
 {
     DisplayGuest(guestList);
     string gName;
+    bool gFound = false;
     Console.Write("\nPlease selected Guest name: ");
     gName = Console.ReadLine();
+    Console.WriteLine($"\n--- All details of guest {gName} ---\n");
     foreach (Guest g in guestList)
     {
         if (gName == g.Name)
         {
-            Console.WriteLine(g.ToString());
+            gFound= true;
+            Console.WriteLine($"{g.HotelStay}");
+            break;
+        }
+        else
+        {
+            gFound= false;
         }
     }
-
+    if (gFound == false)
+    {
+        Console.WriteLine($"Name of Guest {gName} does not exist");
+    }
+    Console.WriteLine();
 }
 void ExtendStay()
 {
