@@ -2,6 +2,7 @@
 // Jia Xian does 1,3,5
 using PRG2_ASSG1_Hotel;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 List<Guest> guestList = new List<Guest>();
@@ -189,6 +190,12 @@ void DisplayGuestName(List<Guest> guestList)
     Console.WriteLine();
 }
 
+bool ValidateNameCheck(string entName) //Function to check if name contains numbers or special characters
+{
+    Regex regex = new Regex(@"^[a-zA-z]+$");
+    return regex.IsMatch(entName); //Returns false if name contains numbers or special characters, Returns true if name is within the range from A - Z
+}
+
 void RegisterGuest()
 {
     while (true)
@@ -199,6 +206,12 @@ void RegisterGuest()
         Console.WriteLine("Please enter the following information\n");
         Console.Write("Guest name: ");
         gName = Console.ReadLine();
+
+        if (ValidateNameCheck(gName) == false) //Checks if name entered was filled with numbers.
+        {
+            Console.WriteLine("\nName should not contain any numbers or special characters.\n");
+            break;
+        }
 
         foreach (Guest g in guestList)
         {
