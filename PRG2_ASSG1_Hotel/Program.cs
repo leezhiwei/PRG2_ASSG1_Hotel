@@ -1,6 +1,7 @@
 ﻿// Zhi Wei does 2,4,6
 // Jia Xian does 1,3,5
 using PRG2_ASSG1_Hotel;
+using System.Collections.Generic;
 
 List<Guest> guestList = new List<Guest>();
 List<Room> availrooms = new List<Room>();
@@ -175,27 +176,20 @@ void DisplayGuest(List<Guest> guestList)
     {
         Console.WriteLine(g.ToString());
     }
+    Console.WriteLine();
 }
 
-void DisplayRoom(List<Room> roomList)
+void DisplayGuestName(List<Guest> guestList)
 {
-    foreach (Room r in roomList)
+    foreach (Guest g in guestList)
     {
-        Console.WriteLine(r.ToString());
+        Console.WriteLine(g.Name);
     }
+    Console.WriteLine();
 }
 
 void RegisterGuest()
 {
-    List<List<string>> guestlist = new List<List<string>>(); // init string-list var
-    string[] guestdata = File.ReadAllLines("Guests.csv");
-    for (int i = 1; i < guestdata.Length; i++)
-    {
-        List<string> values = guestdata[i].Split(',').ToList();
-        //Adding data into list
-        guestlist.Add(values);
-    }
-
     string gName;
     string gPN;
     Console.WriteLine("Please enter the following information\n");
@@ -214,7 +208,7 @@ void RegisterGuest()
     {
         sw.WriteLine(data); //Appending data to Guest.csv
     }
-    Console.WriteLine($"\nGuest Registration for {gName} is Successful!");
+    Console.WriteLine($"\nGuest Registration for {gName} is Successful!\n");
 }
 List<Guest> DisplayCIn(List<Guest> guestList)
 {
@@ -350,6 +344,7 @@ void ShowAvailRoom(List<Room> rlist)
     {
         Console.WriteLine(r.ToString());
     }
+    Console.WriteLine();
 }
 void CheckIn(List<Guest> glist)
 {
@@ -442,7 +437,7 @@ void CheckIn(List<Guest> glist)
 
 void DisplayInfoguest()
 {
-    DisplayGuest(guestList);
+    DisplayGuestName(guestList);
     string gName;
     bool gFound = false;
     Console.Write("\nPlease selected Guest name: ");
@@ -454,6 +449,7 @@ void DisplayInfoguest()
         {
             gFound= true;
             Console.WriteLine($"{g.HotelStay}");
+            Console.WriteLine($"\nCheck in status: {g.IsCheckedin}");
             break;
         }
         else
@@ -541,7 +537,7 @@ while (true)
         }
         else if (entOpt == 5)
         {
-            Console.WriteLine("\n------ Displaying all details for Guest ------\n");
+            Console.WriteLine("\n--- Displaying name of guests ---\n");
             DisplayInfoguest();
         }
         else if (entOpt == 6)
