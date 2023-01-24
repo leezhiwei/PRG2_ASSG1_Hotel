@@ -214,7 +214,7 @@ void RegisterGuest()
             Console.WriteLine($"\nA Guest with the name of {gName} has already been registered.\n");
             break;
         }
-        else if (gName == null || gName.Length < 3) //If the name entered is empty or less than 4 characters
+        else if (gName == null || gName.Length < 3 || gName.Trim().Length < 3) //If the name entered is empty or less than 3 characters or name filled with spaces
         {
             Console.WriteLine("\nThe guest name should not be empty or less than 3 characters in length. Please try again!\n");
             continue;
