@@ -2,6 +2,7 @@
 // Jia Xian does 1,3,5
 using PRG2_ASSG1_Hotel;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 List<Guest> guestList = new List<Guest>();
 List<Room> availrooms = new List<Room>();
@@ -190,25 +191,52 @@ void DisplayGuestName(List<Guest> guestList)
 
 void RegisterGuest()
 {
-    string gName;
-    string gPN;
-    Console.WriteLine("Please enter the following information\n");
-    Console.Write("Guest name: ");
-    gName = Console.ReadLine();
-    Console.Write("Guest passport number: ");
-    gPN = Console.ReadLine();
-
-    Stay stay = new Stay(); //Creating empty stay object
-    Membership membership = new Membership("Ordinary", 0); //Creating a new membership object with ordinary status and 0 points
-    Guest guest = new Guest(gName, gPN, stay, membership); //Creating new guest object
-    guestList.Add(guest); //Adding guest to guestList
-
-    string data = gName + "," + gPN + "," + membership.Status + "," + membership.Points; //Adding guest information into data
-    using (StreamWriter sw = new StreamWriter("Guests.csv", true))
+    while (true)
     {
-        sw.WriteLine(data); //Appending data to Guest.csv
+        string gName;
+        string gPN;
+        bool gDup = false;
+        Console.WriteLine("Please enter the following information\n");
+        Console.Write("Guest name: ");
+        gName = Console.ReadLine();
+
+        foreach (Guest g in guestList)
+        {
+            if (g.Name == gName) //Checks with the name is exactly the same with registered guest names
+            {
+                gDup = true; //Guest name duplicate changes to true
+                break;
+            }
+        }
+
+        if (gDup == true) //Checks if guest name already existed
+        {
+            Console.WriteLine($"\nA Guest with the name of {gName} has already been registered.\n");
+            break;
+        }
+        else if (gName == null || gName.Length < 3) //If the name entered is empty or less than 4 characters
+        {
+            Console.WriteLine("\nThe guest name should not be empty or less than 3 characters in length. Please try again!\n");
+            continue;
+        }
+        else //Continues if name is not empty nor less than 4 characters
+        {
+            Console.Write("Guest passport number: ");
+            gPN = Console.ReadLine();
+            Stay stay = new Stay(); //Creating empty stay object
+            Membership membership = new Membership("Ordinary", 0); //Creating a new membership object with ordinary status and 0 points
+            Guest guest = new Guest(gName, gPN, stay, membership); //Creating new guest object
+            guestList.Add(guest); //Adding guest to guestList
+
+            string data = gName + "," + gPN + "," + membership.Status + "," + membership.Points; //Adding guest information into data
+            using (StreamWriter sw = new StreamWriter("Guests.csv", true))
+            {
+                sw.WriteLine(data); //Appending data to Guest.csv
+            }
+            Console.WriteLine($"\nGuest Registration for {gName} is Successful!\n");
+            break;
+        }
     }
-    Console.WriteLine($"\nGuest Registration for {gName} is Successful!\n");
 }
 List<Guest> DisplayCIn(List<Guest> guestList)
 {
@@ -448,6 +476,7 @@ void DisplayInfoguest()
         if (gName == g.Name)
         {
             gFound= true;
+            Console.WriteLine($"Name: {g.Name}, Passport number: {g.PassportNum}\n");
             Console.WriteLine($"{g.HotelStay}");
             Console.WriteLine($"\nCheck in status: {g.IsCheckedin}");
             break;
