@@ -557,9 +557,9 @@ void ExtendStay()
         Console.WriteLine("Please enter a number.");
         return;
     }
-    if (days < 0)
+    if (days <= 0)
     { // if days less than zero, invalid, print error, return fn
-        Console.WriteLine("Days cannot be negative, please try again.");
+        Console.WriteLine("Days cannot be zero or negative, please try again.");
         return;
     }
     s.CheckOutDate = s.CheckOutDate.AddDays(days); // add days to check-out date
