@@ -180,7 +180,6 @@ void DisplayGuest(List<Guest> guestList) //Created by Lim Jia Xian
     }
     Console.WriteLine();
 }
-
 void DisplayGuestName(List<Guest> guestList) //Created by Lim Jia Xian
 {   //Print guuest names
     int k = 0;
@@ -191,13 +190,11 @@ void DisplayGuestName(List<Guest> guestList) //Created by Lim Jia Xian
     }
     Console.WriteLine();
 }
-
 bool ValidateNameCheck(string entName) //Created by Lim Jia Xian
 {   //Function to check if name contains numbers or special characters
     Regex regex = new Regex(@"^[a-zA-z]+$");
     return regex.IsMatch(entName); //Returns false if name contains numbers or special characters, Returns true if name is within the range from A - Z
 }
-
 void RegisterGuest() //Created by Lim Jia Xian
 {   //Assignment Part 3
     while (true)
@@ -254,230 +251,231 @@ void RegisterGuest() //Created by Lim Jia Xian
     }
 }
 List<Guest> DisplayCIn(List<Guest> guestList)
-{
-    List<Guest> returnlist = new List<Guest>();
-    int count = 0;
-    foreach (Guest g in guestList)
+{ // Lee Zhi Wei
+    List<Guest> returnlist = new List<Guest>(); // list to return, init
+    int count = 0; // count for index + 1
+    foreach (Guest g in guestList) // foreach guest
     {
-        if (!g.IsCheckedin)
+        if (!g.IsCheckedin) // if not checked-in
         {
-            count++;
-            Console.WriteLine($"{count}) {g.ToString()}");
-            returnlist.Add(g);
+            count++; // add 1 to count
+            Console.WriteLine($"{count}) {g.ToString()}"); // print out index num + 1 and details
+            // eg 1) Micheal ...
+            returnlist.Add(g); // add guest to returnlist
         }
     }
-    return returnlist;
+    return returnlist; // return the list
 }
 List<Guest> DisplayGuestsCIned(List<Guest> guestList)
-{
-    List<Guest> alreadycheckedin = new List<Guest>();
-    int count = 0;
+{ // Lee Zhi Wei
+    List<Guest> alreadycheckedin = new List<Guest>(); // new list for returning
+    int count = 0; // init variable for count.
     foreach (Guest g in guestList)
-    {
-        if (g.IsCheckedin)
+    { // foreach guest object in guestlist
+        if (g.IsCheckedin) // if checked-in
         {
-            alreadycheckedin.Add(g);
-            count++;
-            Console.WriteLine($"{count}) {g.ToString()}");
+            alreadycheckedin.Add(g); // add to list
+            count++; // increment count
+            Console.WriteLine($"{count}) {g.ToString()}"); // print out number and tostring
         }
     }
-    return alreadycheckedin;
+    return alreadycheckedin; // return list
 }
 Room AvailRoomSel()
-{
-    Room finalobj = null;
-    DisplayRmCIn(availrooms);
-    Console.Write("Please select a room: ");
-    int choice = -1;
-    Room chosenr = null;
+{ // Lee Zhi Wei
+    Room finalobj = null; // final room object to return
+    DisplayRmCIn(availrooms); // dont store the list as variable, no use
+    Console.Write("Please select a room: "); // prompt to select room
+    int choice = -1; // init with invalid value.
+    Room chosenr = null; // init the chosen room variable, from list
     try
-    {
+    { // try convert choice to number
         choice = Convert.ToInt32(Console.ReadLine());
     }
     catch
-    {
+    { // print error, return null (continues loop)
         Console.WriteLine("Please enter a number.");
         return null;
     }
     try
-    {
+    { // try to get object from list
         chosenr = availrooms[choice - 1];
     }
     catch
-    {
+    { // if unable, print error, return null (continue loop)
         Console.WriteLine("You have chosen an invalid option, which is not in list.");
         return null;
     }
     if (chosenr is StandardRoom)
-    {
-        StandardRoom r = (StandardRoom)chosenr;
-        Console.Write("Do you want to have choice of WiFi (Y/N) ");
-        string ch = Console.ReadLine();
-        ch = ch.ToUpper();
-        if (ch == "Y")
+    { // if room is StandardRoom
+        StandardRoom r = (StandardRoom)chosenr; // cast to StandardRoom
+        Console.Write("Do you want to have choice of WiFi (Y/N) "); // input prompt for wifi
+        string ch = Console.ReadLine(); // get choice
+        ch = ch.ToUpper(); // upper case it
+        if (ch == "Y") // if yes
         {
-            r.RequireWifi = true;
+            r.RequireWifi = true; // set true
         }
-        else if (ch == "N")
+        else if (ch == "N") // if no
         {
-            r.RequireWifi = false;
+            r.RequireWifi = false; // set false
         }
-        else
-        {
+        else // if invalid
+        { // print error, return null (continue loop)
             Console.WriteLine("You have typed in an invalid option.");
             return null;
         }
-        Console.Write("Do you want to have choice of Breakfast (Y/N) ");
-        ch = Console.ReadLine();
-        ch = ch.ToUpper();
-        if (ch == "Y")
+        Console.Write("Do you want to have choice of Breakfast (Y/N) "); // prompt for breakfast
+        ch = Console.ReadLine(); // reinit ch variable
+        ch = ch.ToUpper(); // upper case
+        if (ch == "Y") // yes, set true
         {
             r.RequireBreakfast = true;
         }
-        else if (ch == "N")
+        else if (ch == "N") // no set false
         {
             r.RequireBreakfast = false;
         }
-        else
+        else // else invalid, return nulll (continue loop)
         {
             Console.WriteLine("You have typed in an invalid option.");
             return null;
         }
-        availrooms.RemoveAt(choice - 1);
-        r.IsAvail = false;
-        finalobj = r;
+        availrooms.RemoveAt(choice - 1); // remove room from available list
+        r.IsAvail = false; // set room object to not avail
+        finalobj = r; // put into finalobj for return
     }
     else if (chosenr is DeluxeRoom)
-    {
-        DeluxeRoom r = (DeluxeRoom)chosenr;
-        Console.Write("Do you want to have additional beds (Y/N) ");
-        string ch = Console.ReadLine();
-        ch = ch.ToUpper();
+    { // if chosenroom is DeluxeRoom
+        DeluxeRoom r = (DeluxeRoom)chosenr; // cast to DeluxeRoom
+        Console.Write("Do you want to have additional beds (Y/N) "); // prompt for additional beds
+        string ch = Console.ReadLine(); // put choice to variable
+        ch = ch.ToUpper(); // upper case it
         if (ch == "Y")
-        {
+        { // yes, set true
             r.AdditionalBed = true;
         }
         else if (ch == "N")
-        {
+        { // no, set false
             r.AdditionalBed = false;
         }
         else
-        {
+        { // invalid, print error return null (continue loop)
             Console.WriteLine("You have typed in an invalid option.");
             return null;
         }
-        availrooms.RemoveAt(choice - 1);
-        r.IsAvail = false;
-        finalobj = r;
+        availrooms.RemoveAt(choice - 1); // remove the room from list
+        r.IsAvail = false; // set available to false
+        finalobj = r; // put into final object
     }
-    return finalobj;
+    return finalobj; // return the final object
 }
 void DisplayRmCIn(List<Room> rlist)
-{
-    int count = 0;
+{ // Lee Zhi Wei
+    int count = 0; // init count variable 
     foreach (Room r in rlist)
-    {
-        count++;
-        Console.WriteLine($"{count}) {r.ToString()}");
+    { // foreach room object
+        count++; // increment count
+        Console.WriteLine($"{count}) {r.ToString()}"); // print out count and tostring of room obj
     }
 }
 void ShowAvailRoom(List<Room> rlist)
-{
-    foreach (Room r in rlist)
+{ // Lee Zhi Wei
+    foreach (Room r in rlist) // foreach loop, iterate through each room object.
     {
-        Console.WriteLine(r.ToString());
+        Console.WriteLine(r.ToString()); // run tostring methods
     }
-    Console.WriteLine();
+    Console.WriteLine(); // print \n
 }
 void CheckIn(List<Guest> glist)
-{
-    int num = 0;
-    while (true)
+{ // Lee Zhi Wei
+    int num = 0; // input choice var, init
+    while (true) // input prompt, while loop
     {
-        Room finalobj = null;
-        Guest pickedguest = null;
-        List <Guest> notcheckin = new List<Guest>(DisplayCIn(glist));
-        DateTime cindate = DateTime.Now;
+        Room finalobj = null; // init the final room object to add in
+        Guest pickedguest = null; // init the guest object variable.
+        List <Guest> notcheckin = new List<Guest>(DisplayCIn(glist)); // display all the non-checkedin guests.
+        DateTime cindate = DateTime.Now; // init datetime vars with now, since cannot put null.
         DateTime coutdate = DateTime.Now;
-        Console.Write("Enter the number in which you want to check in: ");
+        Console.Write("Enter the number in which you want to check in: ");// prompt
         try
-        {
+        { // try to convert the user input to num
             num = Convert.ToInt32(Console.ReadLine());
         }
         catch
-        {
+        { // print error, continue loop.
             Console.WriteLine("Please enter a number.");
             continue;
         }
-        int index = num - 1;
-        if (index < 0)
+        int index = num - 1; // index of the list from input
+        if (index < 0) // if -ve index, (cannot use in C#)
         {
-            Console.WriteLine("Invalid number.");
-            continue;
+            Console.WriteLine("Invalid number."); // print error
+            continue; // continue loop
         }
         try
-        {
+        { // try to get guest object
             pickedguest = notcheckin[index];
         }
         catch
-        {
+        { // if unable, print error, continue loop
             Console.WriteLine("Out of range of list");
             continue;
         }
-        Console.Write("Please enter date of Check-In: ");
+        Console.Write("Please enter date of Check-In: "); // check-in prompt
         try
-        {
+        { // try to turn into datetime
             cindate = Convert.ToDateTime(Console.ReadLine());
         }
         catch
-        {
+        { // if not, print error, continue loop
             Console.WriteLine("Invalid date format.");
             continue;
         }
-        Console.Write("Please enter date of Check-Out: ");
+        Console.Write("Please enter date of Check-Out: "); // check-out prompt
         try
-        {
+        { // try turn into datetime
             coutdate = Convert.ToDateTime(Console.ReadLine());
         }
         catch
-        {
+        { // if not print error, continue loop
             Console.WriteLine("Invalid date format.");
             continue;
         }
-        Stay stay = new Stay(cindate, coutdate);
-        finalobj = AvailRoomSel();
-        if (finalobj is null)
+        Stay stay = new Stay(cindate, coutdate); // make new stay object
+        finalobj = AvailRoomSel(); // call the available room method
+        if (finalobj is null) // if failed (object is null)
         {
-            continue;
+            continue; // continue loop
         }
-        stay.AddRoom(finalobj);
-        Console.Write("Do you want to add another room? (Y/N) ");
-        string o = Console.ReadLine();
-        o = o.ToUpper();
-        if (o == "Y")
+        stay.AddRoom(finalobj); // add the room to stay object
+        Console.Write("Do you want to add another room? (Y/N) "); // prompt for another
+        string o = Console.ReadLine(); // string read from console
+        o = o.ToUpper(); // upper case it
+        if (o == "Y") // if yes
         {
-            finalobj = AvailRoomSel();
-            if (finalobj is null)
+            finalobj = AvailRoomSel(); // run again
+            if (finalobj is null) // if failed
             {
-                continue;
+                continue; // continue loop
             }
-            stay.AddRoom(finalobj);
+            stay.AddRoom(finalobj); // add object to stay
         }
-        else if (o == "N")
+        else if (o == "N") // if no
         {
             Console.WriteLine(); // Do nothing continue to next part
         }
-        else
+        else // else invalid choice
         {
-            Console.WriteLine("You have selected invalid option.");
+            Console.WriteLine("You have selected invalid option."); // print error 
+            continue; // continue loop
         }
-        pickedguest.HotelStay = stay;
-        pickedguest.IsCheckedin = true;
-        Console.WriteLine("You have successfully checked-in!");
-        break;
+        pickedguest.HotelStay = stay; // add in stay object
+        pickedguest.IsCheckedin = true; // checked in to true
+        Console.WriteLine("You have successfully checked-in!"); // print success
+        break; // break out of loop, upon success
     }
 }
-
 void DisplayInfoguest() //Created by Lim Jia Xian
 {   //Assignment Part 5
     DisplayGuestName(guestList);
@@ -519,41 +517,55 @@ void DisplayInfoguest() //Created by Lim Jia Xian
     Console.WriteLine();
 }
 void ExtendStay()
-{
-    List<Guest> checkedin = DisplayGuestsCIned(guestList);
-    Guest pickedg = null;
-    int choice = -1;
-    Console.Write("Please enter which guest to extend stay: ");
+{ // Lee Zhi Wei
+    List<Guest> checkedin = DisplayGuestsCIned(guestList); // get how many people checked-in
+    Guest pickedg = null; // picked-guest variable to null
+    int choice = -1; // set choice 
+    Console.Write("Please enter which guest to extend stay: "); // prompt
     try
-    {
+    { // try convert to int
         choice = Convert.ToInt32(Console.ReadLine());
     }
     catch
-    {
+    { // if cannot, print error, return nothing, end method
         Console.WriteLine("Please enter a number.");
         return;
     }
-    pickedg = checkedin[choice - 1];
-    if (pickedg.IsCheckedin == false)
+    try
     {
+        pickedg = checkedin[choice - 1]; // try to get picked-guest into object
+    }
+    catch
+    { // if unable, print error, return method.
+        Console.WriteLine("Please select a selection from the list");
+        return;
+    }
+    if (pickedg.IsCheckedin == false)
+    { // if not checked in, print error, return fn.
         Console.WriteLine("You are not checked in yet.");
         return;
     }
-    Stay s = pickedg.HotelStay;
-    Console.Write("How many days do you want to extend stay by? ");
-    int days = 0;
+    Stay s = pickedg.HotelStay; // store the stay from guest into temp var
+    Console.Write("How many days do you want to extend stay by? "); // prompt for how many days to extend
+    int days = 0; // int var
     try
-    {
+    { // try convert input to int
         days = Convert.ToInt32(Console.ReadLine());
     }
     catch
-    {
+    { // if unable, print error
         Console.WriteLine("Please enter a number.");
         return;
     }
-    s.CheckOutDate = s.CheckOutDate.AddDays(days);
-    guestList[choice - 1] = pickedg;
-    Console.WriteLine($"Date has been updated to {s.CheckOutDate.ToString()}");
+    if (days < 0)
+    { // if days less than zero, invalid, print error, return fn
+        Console.WriteLine("Days cannot be negative, please try again.");
+        return;
+    }
+    s.CheckOutDate = s.CheckOutDate.AddDays(days); // add days to check-out date
+    guestList[choice - 1] = pickedg; // put back manipulated object
+    Console.WriteLine($"Date has been updated to {s.CheckOutDate.ToString()}"); // print success msg
+    return; // end the function
 }
 
 int entOpt;
