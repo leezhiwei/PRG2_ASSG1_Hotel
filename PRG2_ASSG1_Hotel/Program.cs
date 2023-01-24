@@ -172,8 +172,8 @@ List<Room> AvailRoom()
     }
     return AvailableRms;
 }
-void DisplayGuest(List<Guest> guestList)
- {
+void DisplayGuest(List<Guest> guestList) //Created by Lim Jia Xian
+ {  //Assignment Part 1
     foreach (Guest g in guestList)
     {
         Console.WriteLine(g.ToString());
@@ -181,23 +181,25 @@ void DisplayGuest(List<Guest> guestList)
     Console.WriteLine();
 }
 
-void DisplayGuestName(List<Guest> guestList)
-{
+void DisplayGuestName(List<Guest> guestList) //Created by Lim Jia Xian
+{   //Print guuest names
+    int k = 0;
     foreach (Guest g in guestList)
     {
-        Console.WriteLine(g.Name);
+        k++;
+        Console.WriteLine($"{k}. {g.Name}");
     }
     Console.WriteLine();
 }
 
-bool ValidateNameCheck(string entName) //Function to check if name contains numbers or special characters
-{
+bool ValidateNameCheck(string entName) //Created by Lim Jia Xian
+{   //Function to check if name contains numbers or special characters
     Regex regex = new Regex(@"^[a-zA-z]+$");
     return regex.IsMatch(entName); //Returns false if name contains numbers or special characters, Returns true if name is within the range from A - Z
 }
 
-void RegisterGuest()
-{
+void RegisterGuest() //Created by Lim Jia Xian
+{   //Assignment Part 3
     while (true)
     {
         string gName;
@@ -476,19 +478,30 @@ void CheckIn(List<Guest> glist)
     }
 }
 
-void DisplayInfoguest()
-{
+void DisplayInfoguest() //Created by Lim Jia Xian
+{   //Assignment Part 5
     DisplayGuestName(guestList);
     string gName;
     bool gFound = false;
-    Console.Write("\nPlease selected Guest name: ");
-    gName = Console.ReadLine();
-    Console.WriteLine($"\n--- All details of guest {gName} ---\n");
+    
+    while (true)
+    {
+        Console.Write("\nPlease enter Guest name: ");
+        gName = Console.ReadLine();
+        if (ValidateNameCheck(gName) == false) //Checks if name entered was filled with numbers.
+        {
+            Console.WriteLine("\nName should not contain any numbers or special characters.\n");
+            continue;
+        }
+        break;
+    }
+
     foreach (Guest g in guestList)
     {
         if (gName == g.Name)
         {
             gFound= true;
+            Console.WriteLine($"\n--- All details of guest {gName} ---\n");
             Console.WriteLine($"Name: {g.Name}, Passport number: {g.PassportNum}\n");
             Console.WriteLine($"{g.HotelStay}");
             Console.WriteLine($"\nCheck in status: {g.IsCheckedin}");
@@ -501,7 +514,7 @@ void DisplayInfoguest()
     }
     if (gFound == false)
     {
-        Console.WriteLine($"Name of Guest {gName} does not exist");
+        Console.WriteLine($"\nName of Guest {gName} does not exist.\n");
     }
     Console.WriteLine();
 }
