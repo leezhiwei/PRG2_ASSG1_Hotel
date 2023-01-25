@@ -236,9 +236,9 @@ void RegisterGuest() //Created by Lim Jia Xian
         {
             Console.Write("Guest passport number: ");
             gPN = Console.ReadLine();
-            if (gPN == "")
+            if (gPN.Trim().Length < 5) //Checks if guest passport number is empty or contains spaces or less than 5 characters in length
             {
-                Console.WriteLine("Passport number cannot be empty!");
+                Console.WriteLine("Passport number cannot be empty or less than 5 characters in length. Please try again!\n");
                 continue;
             }
             Stay stay = new Stay(); //Creating empty stay object
