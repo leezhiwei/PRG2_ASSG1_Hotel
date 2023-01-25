@@ -1,6 +1,7 @@
 ﻿// Zhi Wei does 2,4,6
 // Jia Xian does 1,3,5
 using PRG2_ASSG1_Hotel;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -235,6 +236,11 @@ void RegisterGuest() //Created by Lim Jia Xian
         {
             Console.Write("Guest passport number: ");
             gPN = Console.ReadLine();
+            if (gPN == "")
+            {
+                Console.WriteLine("Passport number cannot be empty!");
+                continue;
+            }
             Stay stay = new Stay(); //Creating empty stay object
             Membership membership = new Membership("Ordinary", 0); //Creating a new membership object with ordinary status and 0 points
             Guest guest = new Guest(gName, gPN, stay, membership); //Creating new guest object
@@ -501,8 +507,15 @@ void DisplayInfoguest() //Created by Lim Jia Xian
             gFound= true;
             Console.WriteLine($"\n--- All details of guest {gName} ---\n");
             Console.WriteLine($"Name: {g.Name}, Passport number: {g.PassportNum}\n");
-            Console.WriteLine($"{g.HotelStay}");
-            Console.WriteLine($"\nCheck in status: {g.IsCheckedin}");
+            if (g.HotelStay.CheckInDate == Convert.ToDateTime("1/1/0001 12:00:00 am") || g.HotelStay.CheckOutDate == Convert.ToDateTime("1/1/0001 12:00:00 am"))
+            {
+                Console.WriteLine("Guest has no stay information.");
+            }
+            else
+            {
+                Console.WriteLine($"{g.HotelStay}");
+                Console.WriteLine($"\nCheck in status: {g.IsCheckedin}");
+            }
             break;
         }
         else
