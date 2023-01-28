@@ -315,7 +315,7 @@ Room AvailRoomSel()
     if (chosenr is StandardRoom)
     { // if room is StandardRoom
         StandardRoom r = (StandardRoom)chosenr; // cast to StandardRoom
-        Console.Write("Do you want to have choice of WiFi (Y/N) "); // input prompt for wifi
+        Console.Write("Do you want to have choice of WiFi (Y/N): "); // input prompt for wifi
         string ch = Console.ReadLine(); // get choice
         ch = ch.ToUpper(); // upper case it
         if (ch == "Y") // if yes
@@ -331,7 +331,7 @@ Room AvailRoomSel()
             Console.WriteLine("You have typed in an invalid option.");
             return null;
         }
-        Console.Write("Do you want to have choice of Breakfast (Y/N) "); // prompt for breakfast
+        Console.Write("Do you want to have choice of Breakfast (Y/N): "); // prompt for breakfast
         ch = Console.ReadLine(); // reinit ch variable
         ch = ch.ToUpper(); // upper case
         if (ch == "Y") // yes, set true
@@ -354,7 +354,7 @@ Room AvailRoomSel()
     else if (chosenr is DeluxeRoom)
     { // if chosenroom is DeluxeRoom
         DeluxeRoom r = (DeluxeRoom)chosenr; // cast to DeluxeRoom
-        Console.Write("Do you want to have additional beds (Y/N) "); // prompt for additional beds
+        Console.Write("Do you want to have additional beds (Y/N): "); // prompt for additional beds
         string ch = Console.ReadLine(); // put choice to variable
         ch = ch.ToUpper(); // upper case it
         if (ch == "Y")
@@ -455,7 +455,7 @@ void CheckIn(List<Guest> glist)
             continue; // continue loop
         }
         stay.AddRoom(finalobj); // add the room to stay object
-        Console.Write("Do you want to add another room? (Y/N) "); // prompt for another
+        Console.Write("Do you want to add another room? (Y/N): "); // prompt for another
         string o = Console.ReadLine(); // string read from console
         o = o.ToUpper(); // upper case it
         if (o == "Y") // if yes
@@ -478,7 +478,7 @@ void CheckIn(List<Guest> glist)
         }
         pickedguest.HotelStay = stay; // add in stay object
         pickedguest.IsCheckedin = true; // checked in to true
-        Console.WriteLine("You have successfully checked-in!"); // print success
+        Console.WriteLine("You have successfully checked-in!\n"); // print success
         break; // break out of loop, upon success
     }
 }
@@ -581,6 +581,50 @@ void ExtendStay()
     return; // end the function
 }
 
+void CheckOutGuest() //Created by Lim Jia Xian
+{
+    DisplayGuestName(guestList);
+
+    string gName;
+    bool gFound = false;
+
+    while (true)
+    {
+        Console.Write("\nPlease enter Guest name: ");
+        gName = Console.ReadLine();
+        if (ValidateNameCheck(gName) == false) //Checks if name entered was filled with numbers.
+        {
+            Console.WriteLine("\nName should not contain any numbers or special characters.\n");
+            continue;
+        }
+        break;
+    }
+
+    foreach (Guest g in guestList)
+    {
+        if (gName == g.Name)
+        {
+            gFound = true;
+            Console.WriteLine($"\n--- All details of guest {gName} ---\n");
+            Console.WriteLine($"Name: {g.Name}, Passport number: {g.PassportNum}\n");
+            Console.WriteLine($"{g.HotelStay}");
+            Console.WriteLine($"\nTotal bill amount: ${g.HotelStay.CalculateTotal()}");
+            Console.WriteLine($"\nMembership Status: ${g.Member.ToString()}");
+            break;
+        }
+        else
+        {
+            gFound = false;
+        }
+    }
+    if (gFound == false)
+    {
+        Console.WriteLine($"\nName of Guest {gName} does not exist.\n");
+    }
+    Console.WriteLine();
+}
+
+
 int entOpt;
 InitData();
 while (true)
@@ -588,7 +632,7 @@ while (true)
     try
     {
         Console.WriteLine("------ Hotel Guest Management System ------");
-        Console.WriteLine("[1]. Display all guests\n[2]. Display all available rooms\n[3]. Register guest\n[4]. Check-in guest\n[5]. Display all details for guest\n[6]. Extend days for stay\n[0]. Quit Hotal Guest Management System");
+        Console.WriteLine("[1]. Display all guests\n[2]. Display all available rooms\n[3]. Register guest\n[4]. Check-in guest\n[5]. Check-out guest\n[6]. Display all details for guest\n[7]. Extend days for stay\n[8]. Display monthly & Yearly charged amounts\n[0]. Quit Hotal Guest Management System");
         Console.Write("-------------------------------------------\nPlease enter your option: ");
         entOpt = Convert.ToInt32(Console.ReadLine());
         if (entOpt == 0)
@@ -617,26 +661,32 @@ while (true)
         }
         else if (entOpt == 5)
         {
+            Console.WriteLine("\n------ Guest Check-OUT ------\n");
+            CheckOutGuest();
+        }
+        else if (entOpt == 6)
+        {
             Console.WriteLine("\n--- Displaying name of guests ---\n");
             DisplayInfoguest();
         }
-        else if (entOpt == 6)
+        else if (entOpt == 7)
         {
             Console.WriteLine("\n------ Extending days for stay ------\n");
             ExtendStay();
         }
+        else if (entOpt == 8)
+        {
+            Console.WriteLine("\n---- Display monthly & Yearly charged amounts ----\n");
+            Console.WriteLine();
+        }
         else
         {
-            Console.WriteLine("\nPlease enter a numeric value from 0 - 6");
+            Console.WriteLine("\nPlease enter a numeric value from 0 - 8\n");
         }
     }
     catch (FormatException ex)
     {
-        Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 6");
-    }
-    catch
-    {
-        Console.WriteLine($"\nPlease enter the correct value format and try again. The option only accept numeric values from 0 - 6");
+        Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 8\n");
     }
 }
 
