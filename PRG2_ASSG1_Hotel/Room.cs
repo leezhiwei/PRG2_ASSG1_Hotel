@@ -26,7 +26,7 @@ namespace PRG2_ASSG1_Hotel
 
         public override string ToString()
         {
-            return $"RoomNo: {RoomNumber}, BedConfig: {BedConfiguration}, DailyRate: ${DailyRate:F2}, IsAvail: {IsAvail}";
+            return $"RoomNo: {RoomNumber}, BedConfig: {BedConfiguration}, DailyRate: ${DailyRate:F2}, IsAvail: {IsAvail} ";
         }
     }
 }
