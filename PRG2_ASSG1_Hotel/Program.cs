@@ -609,6 +609,7 @@ void CheckOutGuest() //Created by Lim Jia Xian
 {
     DisplayGuestName(guestList);
     int gPoints;
+    double fBill;
     string gName;
     bool gFound = false;
 
@@ -642,12 +643,38 @@ void CheckOutGuest() //Created by Lim Jia Xian
                 Console.WriteLine($"{g.HotelStay}");
                 Console.WriteLine($"\nTotal bill amount: ${g.HotelStay.CalculateTotal()}");
                 Console.WriteLine($"\nMembership Status: ${g.Member.ToString()}");
-                Console.WriteLine($"\nEarned points: {g.Member.EarnPoints(g.HotelStay.CalculateTotal())}");
                 if (g.Member.Status == "Sliver" || g.Member.Status == "Gold")
                 {
-                    Console.WriteLine("You are elligible to redeem points!.");
+                    Console.WriteLine("You are elligible to redeem points!");
                     Console.Write("Enter the amount of points to offset the total bill amount: ");
                     gPoints = Convert.ToInt32(Console.ReadLine());
+                    g.Member.RedeemPoints(gPoints);
+                    fBill = g.HotelStay.CalculateTotal() - gPoints;
+                    Console.WriteLine($"Final bill amount: ${fBill}");
+                    g.Member.EarnPoints(fBill);
+                    if ((fBill / 10) > 0)
+                    {
+                        double ePoints = fBill / 10;
+                        Console.WriteLine($"Earned points: {ePoints}");
+                    }
+                    else
+                    {
+                        double ePoints = 0;
+                        Console.WriteLine($"Earned points:{ePoints}");
+                    }
+                    Console.WriteLine($"\nCurrent membership points: {g.Member.Points}");
+                    if (g.Member.Points < 200)
+                    {
+                        if (g.Member.Points > 100 && g.Member.Points < 200)
+                        {
+                            Console.WriteLine($"Membership status promoted to Sliver!");
+                        }
+                        else if (g.Member.Points > 100 && g.Member.Points >= 200)
+                        {
+                            Console.WriteLine($"Membership status promoted to Gold!");
+                        }
+                    }
+                    g.IsCheckedin = false;
                 }
                 break;
             }
