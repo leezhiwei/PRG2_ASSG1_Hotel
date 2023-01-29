@@ -145,33 +145,33 @@ void InitData()
     }
 }
 List<Room> AvailRoom()
-{
-    List<Room> AvailableRms = new List<Room>();
+{ // Lee Zhi Wei
+    List<Room> AvailableRms = new List<Room>(); // new ReturnList
     foreach (Guest g in guestList)
-    {
+    { // foreach guest in guestlist
         foreach (Room r in g.HotelStay.RoomList)
-        {
-            Room ro = r;
+        { // foreach room in Stay.RoomList
+            Room ro = r; // need to reassign to local var, if not will give error (cannot assign to foreach object)
             if (ro.IsAvail)
-            {
+            { // if available
                 if (ro is DeluxeRoom)
-                {
-                    DeluxeRoom dr = (DeluxeRoom)ro;
-                    dr.AdditionalBed = false;
-                    ro = dr;
+                { // if deluxe
+                    DeluxeRoom dr = (DeluxeRoom)ro; // cast to DeluxeRoom object
+                    dr.AdditionalBed = false; // set AdditonalBed to false
+                    ro = dr; // put back to initial variable
                 }
-                else if (ro is StandardRoom)
-                {
-                    StandardRoom sr = (StandardRoom)ro;
-                    sr.RequireBreakfast = false;
-                    sr.RequireWifi = false;
-                    ro = sr;
+                else if (ro is StandardRoom) 
+                { // else if standard
+                    StandardRoom sr = (StandardRoom)ro; // cast to standard room object
+                    sr.RequireBreakfast = false; // set breakfast to false
+                    sr.RequireWifi = false; // set wifi to false
+                    ro = sr; // put back to initial variable
                 }
-                AvailableRms.Add(ro);
+                AvailableRms.Add(ro); // add to returnlist
             }
         }
     }
-    return AvailableRms;
+    return AvailableRms; // return the list
 }
 void DisplayGuest(List<Guest> guestList) //Created by Lim Jia Xian
  {  //Assignment Part 1
