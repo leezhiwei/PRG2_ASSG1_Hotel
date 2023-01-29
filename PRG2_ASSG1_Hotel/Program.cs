@@ -203,6 +203,7 @@ void RegisterGuest() //Created by Lim Jia Xian
         string gName;
         string gPN;
         bool gDup = false;
+        bool gPDup = false;
         Console.WriteLine("Please enter the following information\n");
         Console.Write("Guest name: ");
         gName = Console.ReadLine();
@@ -210,15 +211,41 @@ void RegisterGuest() //Created by Lim Jia Xian
         if (ValidateNameCheck(gName) == false) //Checks if name entered was filled with numbers.
         {
             Console.WriteLine("\nName should not contain any numbers or special characters.\n");
-            break;
+            continue;
         }
-
-        foreach (Guest g in guestList)
+        else if (gName == null || gName.Length < 3 || gName.Trim().Length < 3) //If the name entered is empty or less than 3 characters or name filled with spaces
         {
-            if (g.Name == gName) //Checks with the name is exactly the same with registered guest names
+            Console.WriteLine("\nThe guest name should not be empty or less than 3 characters in length. Please try again!\n");
+            continue;
+        }
+        else
+        {
+            foreach (Guest g in guestList)
             {
-                gDup = true; //Guest name duplicate changes to true
-                break;
+                if (g.Name.ToUpper() == gName.ToUpper()) //Checks if the name is exactly the same with registered guest names
+                {
+                    gDup = true; //Guest name duplicate changes to true
+                    break;
+                }
+            }
+        }
+        
+        Console.Write("Guest passport number: ");
+        gPN = Console.ReadLine();
+        if (gPN.Trim().Length < 5) //Checks if guest passport number is empty or contains spaces or less than 5 characters in length
+        {
+            Console.WriteLine("Passport number cannot be empty or less than 5 characters in length. Please try again!\n");
+            continue;
+        }
+        else
+        {
+            foreach (Guest g in guestList)
+            {
+                if (g.PassportNum.ToUpper() == gPN.ToUpper()) //Checks if the passport num is exactly the same with registered passport nums
+                {
+                    gPDup = true; //Guest passport num duplicate changes to true
+                    break;
+                }
             }
         }
 
@@ -227,25 +254,17 @@ void RegisterGuest() //Created by Lim Jia Xian
             Console.WriteLine($"\nA Guest with the name of {gName} has already been registered.\n");
             break;
         }
-        else if (gName == null || gName.Length < 3 || gName.Trim().Length < 3) //If the name entered is empty or less than 3 characters or name filled with spaces
+        else if (gPDup == true) //Checks if guest passport num already existed
         {
-            Console.WriteLine("\nThe guest name should not be empty or less than 3 characters in length. Please try again!\n");
-            continue;
+            Console.WriteLine("\nA Guest with that passport number has already been registered.\n");
+            break;
         }
-        else //Continues if name is not empty nor less than 4 characters
+        else //Continues if there is no issues with name or passport num
         {
-            Console.Write("Guest passport number: ");
-            gPN = Console.ReadLine();
-            if (gPN.Trim().Length < 5) //Checks if guest passport number is empty or contains spaces or less than 5 characters in length
-            {
-                Console.WriteLine("Passport number cannot be empty or less than 5 characters in length. Please try again!\n");
-                continue;
-            }
             Stay stay = new Stay(); //Creating empty stay object
             Membership membership = new Membership("Ordinary", 0); //Creating a new membership object with ordinary status and 0 points
             Guest guest = new Guest(gName, gPN, stay, membership); //Creating new guest object
             guestList.Add(guest); //Adding guest to guestList
-
             string data = gName + "," + gPN + "," + membership.Status + "," + membership.Points; //Adding guest information into data
             using (StreamWriter sw = new StreamWriter("Guests.csv", true))
             {
@@ -637,6 +656,7 @@ while (true)
         entOpt = Convert.ToInt32(Console.ReadLine());
         if (entOpt == 0)
         {
+            Console.WriteLine("\n-- Quiting Hotel Management Application --\n");
             break;
         }
         else if (entOpt == 1)
