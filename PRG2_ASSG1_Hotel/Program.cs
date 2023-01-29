@@ -203,6 +203,7 @@ void RegisterGuest() //Created by Lim Jia Xian
         string gName;
         string gPN;
         bool gDup = false;
+        bool gPDup = false;
         Console.WriteLine("Please enter the following information\n");
         Console.Write("Guest name: ");
         gName = Console.ReadLine();
@@ -210,42 +211,65 @@ void RegisterGuest() //Created by Lim Jia Xian
         if (ValidateNameCheck(gName) == false) //Checks if name entered was filled with numbers.
         {
             Console.WriteLine("\nName should not contain any numbers or special characters.\n");
-            break;
-        }
-
-        foreach (Guest g in guestList)
-        {
-            if (g.Name == gName) //Checks with the name is exactly the same with registered guest names
-            {
-                gDup = true; //Guest name duplicate changes to true
-                break;
-            }
-        }
-
-        if (gDup == true) //Checks if guest name already existed
-        {
-            Console.WriteLine($"\nA Guest with the name of {gName} has already been registered.\n");
-            break;
+            continue;
         }
         else if (gName == null || gName.Length < 3 || gName.Trim().Length < 3) //If the name entered is empty or less than 3 characters or name filled with spaces
         {
             Console.WriteLine("\nThe guest name should not be empty or less than 3 characters in length. Please try again!\n");
             continue;
         }
-        else //Continues if name is not empty nor less than 4 characters
+        else
         {
-            Console.Write("Guest passport number: ");
-            gPN = Console.ReadLine();
-            if (gPN == "")
+            foreach (Guest g in guestList)
             {
-                Console.WriteLine("Passport number cannot be empty!");
-                continue;
+                if (g.Name.ToUpper() == gName.ToUpper()) //Checks if the name is exactly the same with registered guest names
+                {
+                    gDup = true; //Guest name duplicate changes to true
+                    break;
+                }
             }
+        }
+        
+        Console.Write("Guest passport number: ");
+        gPN = Console.ReadLine();
+        if (gPN.Trim().Length < 5) //Checks if guest passport number is empty or contains spaces or less than 5 characters in length
+        {
+            Console.WriteLine("Passport number cannot be empty or less than 5 characters in length. Please try again!\n");
+            continue;
+        }
+        else
+        {
+            foreach (Guest g in guestList)
+            {
+                if (g.PassportNum.ToUpper() == gPN.ToUpper()) //Checks if the passport num is exactly the same with registered passport nums
+                {
+                    gPDup = true; //Guest passport num duplicate changes to true
+                    break;
+                }
+            }
+        }
+        
+        if (gDup == true && gPDup == true) //Checks if both guest name & passport num has already existed
+        {
+            Console.WriteLine("\nA Guest with that name & passport number has already been registered.\nPlease try again later with a unique name & passport number.\n");
+            break;
+        }
+        else if (gPDup == true) //Checks if guest passport num already existed
+        {
+            Console.WriteLine("\nA Guest with that passport number has already been registered.\nPlease try again later with a unique passport number.\n");
+            break;
+        }
+        else if (gDup == true) //Checks if guest name already existed
+        {
+            Console.WriteLine($"\nA Guest with the name of {gName} has already been registered.\nPlease try again later with a unique name.\n");
+            break;
+        }
+        else //Continues if there is no issues with name or passport num
+        {
             Stay stay = new Stay(); //Creating empty stay object
             Membership membership = new Membership("Ordinary", 0); //Creating a new membership object with ordinary status and 0 points
             Guest guest = new Guest(gName, gPN, stay, membership); //Creating new guest object
             guestList.Add(guest); //Adding guest to guestList
-
             string data = gName + "," + gPN + "," + membership.Status + "," + membership.Points; //Adding guest information into data
             using (StreamWriter sw = new StreamWriter("Guests.csv", true))
             {
@@ -315,7 +339,7 @@ Room AvailRoomSel()
     if (chosenr is StandardRoom)
     { // if room is StandardRoom
         StandardRoom r = (StandardRoom)chosenr; // cast to StandardRoom
-        Console.Write("Do you want to have choice of WiFi (Y/N) "); // input prompt for wifi
+        Console.Write("Do you want to have choice of WiFi (Y/N): "); // input prompt for wifi
         string ch = Console.ReadLine(); // get choice
         ch = ch.ToUpper(); // upper case it
         if (ch == "Y") // if yes
@@ -331,7 +355,7 @@ Room AvailRoomSel()
             Console.WriteLine("You have typed in an invalid option.");
             return null;
         }
-        Console.Write("Do you want to have choice of Breakfast (Y/N) "); // prompt for breakfast
+        Console.Write("Do you want to have choice of Breakfast (Y/N): "); // prompt for breakfast
         ch = Console.ReadLine(); // reinit ch variable
         ch = ch.ToUpper(); // upper case
         if (ch == "Y") // yes, set true
@@ -354,7 +378,7 @@ Room AvailRoomSel()
     else if (chosenr is DeluxeRoom)
     { // if chosenroom is DeluxeRoom
         DeluxeRoom r = (DeluxeRoom)chosenr; // cast to DeluxeRoom
-        Console.Write("Do you want to have additional beds (Y/N) "); // prompt for additional beds
+        Console.Write("Do you want to have additional beds (Y/N): "); // prompt for additional beds
         string ch = Console.ReadLine(); // put choice to variable
         ch = ch.ToUpper(); // upper case it
         if (ch == "Y")
@@ -455,7 +479,7 @@ void CheckIn(List<Guest> glist)
             continue; // continue loop
         }
         stay.AddRoom(finalobj); // add the room to stay object
-        Console.Write("Do you want to add another room? (Y/N) "); // prompt for another
+        Console.Write("Do you want to add another room? (Y/N): "); // prompt for another
         string o = Console.ReadLine(); // string read from console
         o = o.ToUpper(); // upper case it
         if (o == "Y") // if yes
@@ -478,7 +502,7 @@ void CheckIn(List<Guest> glist)
         }
         pickedguest.HotelStay = stay; // add in stay object
         pickedguest.IsCheckedin = true; // checked in to true
-        Console.WriteLine("You have successfully checked-in!"); // print success
+        Console.WriteLine("You have successfully checked-in!\n"); // print success
         break; // break out of loop, upon success
     }
 }
@@ -581,6 +605,66 @@ void ExtendStay()
     return; // end the function
 }
 
+void CheckOutGuest() //Created by Lim Jia Xian
+{
+    DisplayGuestName(guestList);
+    int gPoints;
+    string gName;
+    bool gFound = false;
+
+    while (true)
+    {
+        Console.Write("\nPlease enter Guest name: ");
+        gName = Console.ReadLine();
+        if (ValidateNameCheck(gName) == false) //Checks if name entered was filled with numbers.
+        {
+            Console.WriteLine("\nName should not contain any numbers or special characters.\n");
+            continue;
+        }
+        break;
+    }
+
+    foreach (Guest g in guestList)
+    {
+        if (g.IsCheckedin == false)
+        {
+            Console.WriteLine($"\nUnable to check out!\nGuest of the name {gName} is not checked in yet.\n");
+            gFound = true; //Guest found is considered to be true, just that the guest is not able to check out at this moment.
+            break;
+        }
+        else
+        {
+            if (gName == g.Name)
+            {
+                gFound = true;
+                Console.WriteLine($"\n--- All details of guest {gName} ---\n");
+                Console.WriteLine($"Name: {g.Name}, Passport number: {g.PassportNum}\n");
+                Console.WriteLine($"{g.HotelStay}");
+                Console.WriteLine($"\nTotal bill amount: ${g.HotelStay.CalculateTotal()}");
+                Console.WriteLine($"\nMembership Status: ${g.Member.ToString()}");
+                Console.WriteLine($"\nEarned points: {g.Member.EarnPoints(g.HotelStay.CalculateTotal())}");
+                if (g.Member.Status == "Sliver" || g.Member.Status == "Gold")
+                {
+                    Console.WriteLine("You are elligible to redeem points!.");
+                    Console.Write("Enter the amount of points to offset the total bill amount: ");
+                    gPoints = Convert.ToInt32(Console.ReadLine());
+                }
+                break;
+            }
+            else
+            {
+                gFound = false;
+            }
+        }
+    }
+    if (gFound == false)
+    {
+        Console.WriteLine($"\nName of Guest {gName} does not exist.\n");
+    }
+    Console.WriteLine();
+}
+
+
 int entOpt;
 InitData();
 while (true)
@@ -588,11 +672,12 @@ while (true)
     try
     {
         Console.WriteLine("------ Hotel Guest Management System ------");
-        Console.WriteLine("[1]. Display all guests\n[2]. Display all available rooms\n[3]. Register guest\n[4]. Check-in guest\n[5]. Display all details for guest\n[6]. Extend days for stay\n[0]. Quit Hotal Guest Management System");
+        Console.WriteLine("[1]. Display all guests\n[2]. Display all available rooms\n[3]. Register guest\n[4]. Check-in guest\n[5]. Check-out guest\n[6]. Display all details for guest\n[7]. Extend days for stay\n[8]. Display monthly & Yearly charged amounts\n[0]. Quit Hotal Guest Management System");
         Console.Write("-------------------------------------------\nPlease enter your option: ");
         entOpt = Convert.ToInt32(Console.ReadLine());
         if (entOpt == 0)
         {
+            Console.WriteLine("\n-- Quiting Hotel Management Application --\n");
             break;
         }
         else if (entOpt == 1)
@@ -617,26 +702,32 @@ while (true)
         }
         else if (entOpt == 5)
         {
+            Console.WriteLine("\n------ Guest Check-OUT ------\n");
+            CheckOutGuest();
+        }
+        else if (entOpt == 6)
+        {
             Console.WriteLine("\n--- Displaying name of guests ---\n");
             DisplayInfoguest();
         }
-        else if (entOpt == 6)
+        else if (entOpt == 7)
         {
             Console.WriteLine("\n------ Extending days for stay ------\n");
             ExtendStay();
         }
+        else if (entOpt == 8)
+        {
+            Console.WriteLine("\n---- Display monthly & Yearly charged amounts ----\n");
+            Console.WriteLine();
+        }
         else
         {
-            Console.WriteLine("\nPlease enter a numeric value from 0 - 6");
+            Console.WriteLine("\nPlease enter a numeric value from 0 - 8\n");
         }
     }
     catch (FormatException ex)
     {
-        Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 6");
-    }
-    catch
-    {
-        Console.WriteLine($"\nPlease enter the correct value format and try again. The option only accept numeric values from 0 - 6");
+        Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 8\n");
     }
 }
 

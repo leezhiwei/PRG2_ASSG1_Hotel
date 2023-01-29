@@ -27,7 +27,7 @@ namespace PRG2_ASSG1_Hotel
         }
         public override string ToString()
         {
-            return base.ToString() + $" AdditionalBed: {AdditionalBed}";
+            return base.ToString() + $" AdditionalBed: {AdditionalBed} ";
         }
     }
 }

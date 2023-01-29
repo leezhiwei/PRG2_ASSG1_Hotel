@@ -34,7 +34,7 @@ namespace PRG2_ASSG1_Hotel
 
         public override string ToString()
         {
-            return base.ToString() + $" RequireWifi: {RequireWifi}, RequireBreakFast: {RequireBreakfast}";
+            return base.ToString() + $" RequireWifi: {RequireWifi}, RequireBreakFast: {RequireBreakfast} ";
         }
     }
 }
