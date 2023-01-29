@@ -248,15 +248,20 @@ void RegisterGuest() //Created by Lim Jia Xian
                 }
             }
         }
-
-        if (gDup == true) //Checks if guest name already existed
+        
+        if (gDup == true && gPDup == true) //Checks if both guest name & passport num has already existed
         {
-            Console.WriteLine($"\nA Guest with the name of {gName} has already been registered.\n");
+            Console.WriteLine("\nA Guest with that name & passport number has already been registered.\nPlease try again later with a unique name & passport number.\n");
             break;
         }
         else if (gPDup == true) //Checks if guest passport num already existed
         {
-            Console.WriteLine("\nA Guest with that passport number has already been registered.\n");
+            Console.WriteLine("\nA Guest with that passport number has already been registered.\nPlease try again later with a unique passport number.\n");
+            break;
+        }
+        else if (gDup == true) //Checks if guest name already existed
+        {
+            Console.WriteLine($"\nA Guest with the name of {gName} has already been registered.\nPlease try again later with a unique name.\n");
             break;
         }
         else //Continues if there is no issues with name or passport num
@@ -603,7 +608,7 @@ void ExtendStay()
 void CheckOutGuest() //Created by Lim Jia Xian
 {
     DisplayGuestName(guestList);
-
+    int gPoints;
     string gName;
     bool gFound = false;
 
@@ -621,19 +626,35 @@ void CheckOutGuest() //Created by Lim Jia Xian
 
     foreach (Guest g in guestList)
     {
-        if (gName == g.Name)
+        if (g.IsCheckedin == false)
         {
-            gFound = true;
-            Console.WriteLine($"\n--- All details of guest {gName} ---\n");
-            Console.WriteLine($"Name: {g.Name}, Passport number: {g.PassportNum}\n");
-            Console.WriteLine($"{g.HotelStay}");
-            Console.WriteLine($"\nTotal bill amount: ${g.HotelStay.CalculateTotal()}");
-            Console.WriteLine($"\nMembership Status: ${g.Member.ToString()}");
+            Console.WriteLine($"\nUnable to check out!\nGuest of the name {gName} is not checked in yet.\n");
+            gFound = true; //Guest found is considered to be true, just that the guest is not able to check out at this moment.
             break;
         }
         else
         {
-            gFound = false;
+            if (gName == g.Name)
+            {
+                gFound = true;
+                Console.WriteLine($"\n--- All details of guest {gName} ---\n");
+                Console.WriteLine($"Name: {g.Name}, Passport number: {g.PassportNum}\n");
+                Console.WriteLine($"{g.HotelStay}");
+                Console.WriteLine($"\nTotal bill amount: ${g.HotelStay.CalculateTotal()}");
+                Console.WriteLine($"\nMembership Status: ${g.Member.ToString()}");
+                Console.WriteLine($"\nEarned points: {g.Member.EarnPoints(g.HotelStay.CalculateTotal())}");
+                if (g.Member.Status == "Sliver" || g.Member.Status == "Gold")
+                {
+                    Console.WriteLine("You are elligible to redeem points!.");
+                    Console.Write("Enter the amount of points to offset the total bill amount: ");
+                    gPoints = Convert.ToInt32(Console.ReadLine());
+                }
+                break;
+            }
+            else
+            {
+                gFound = false;
+            }
         }
     }
     if (gFound == false)
