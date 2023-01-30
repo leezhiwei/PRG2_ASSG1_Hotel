@@ -612,7 +612,7 @@ void ExtendStay()
 }
 
 void CheckOutGuest() //Created by Lim Jia Xian
-{
+{   //Advanced Feature B
     DisplayGuestName(guestList);
     int gPoints;
     double fBill;
@@ -633,7 +633,7 @@ void CheckOutGuest() //Created by Lim Jia Xian
 
     foreach (Guest g in guestList)
     {
-        if (gName.ToUpper() == g.Name.ToUpper() && g.IsCheckedin == false)
+        if (gName.ToUpper() == g.Name.ToUpper() && g.IsCheckedin == false) //Checks for guest name and guest check in status
         {
             Console.WriteLine($"\nUnable to check out!\nGuest of the name {gName} is not checked in yet.\n");
             gFound = true; //Guest found is considered to be true, just that the guest is not able to check out at this moment.
@@ -641,7 +641,7 @@ void CheckOutGuest() //Created by Lim Jia Xian
         }
         else
         {
-            if (gName.ToUpper() == g.Name.ToUpper())
+            if (gName.ToUpper() == g.Name.ToUpper()) //Checks for guest name
             {
                 gFound = true;
                 Console.WriteLine($"\n--- All details of guest {g.Name} ---\n");
@@ -649,26 +649,26 @@ void CheckOutGuest() //Created by Lim Jia Xian
                 Console.WriteLine($"{g.HotelStay}");
                 Console.WriteLine($"\nTotal bill amount: ${g.HotelStay.CalculateTotal()}");
                 Console.WriteLine($"\nMembership {g.Member.ToString()}");
-                if (g.Member.Status == "Sliver" || g.Member.Status == "Gold")
+                if (g.Member.Status == "Silver" || g.Member.Status == "Gold") //If member status is silver or gold
                 {
                     Console.WriteLine("You are elligible to redeem points!");
                     Console.Write("Enter the amount of points to offset the total bill amount: ");
                     gPoints = Convert.ToInt32(Console.ReadLine());
                     g.Member.RedeemPoints(gPoints);
-                    fBill = g.HotelStay.CalculateTotal() - gPoints;
+                    fBill = g.HotelStay.CalculateTotal() - gPoints; //Final bill is calculated by total - guest redeem points
                     Console.WriteLine($"Final bill amount: ${fBill}");
                     Console.WriteLine("\n----- Press any KEY to make payment -----\n");
                     Console.ReadLine();
                     g.Member.EarnPoints(fBill);
-                    if ((fBill / 10) >= 1)
+                    if ((fBill / 10) >= 1) //Checks if final bill / 10 returns a value more than 0
                     {
-                        double ePoints = fBill / 10;
+                        double ePoints = fBill / 10; //Points earned = final bill / 10
                         Console.WriteLine($"Earned points: {ePoints}");
-                        if (g.Member.Status == "Sliver") //Checks if member status is sliver
+                        if (g.Member.Status == "Silver") //Checks if member status is silver
                         {
-                            if (g.Member.Points >= 200)
+                            if (g.Member.Points >= 200) //Checks if member points is 200 or more
                             {
-                                g.Member.Status = "Gold";
+                                g.Member.Status = "Gold"; //Promotes member status
                                 Console.WriteLine($"Membership status has been promoted to {g.Member.Status}!");
                             }
                         }
@@ -691,24 +691,24 @@ void CheckOutGuest() //Created by Lim Jia Xian
                     {
                         double ePoints = fBill / 10;
                         Console.WriteLine($"Earned points: {ePoints}");
-                        if (g.Member.Status == "Sliver") //Checks if member status is sliver
+                        if (g.Member.Status == "Silver") //Checks if member status is silver
                         {
-                            if (g.Member.Points >= 200)
+                            if (g.Member.Points >= 200) //Checks if member points is 200 or more
                             {
-                                g.Member.Status = "Gold";
+                                g.Member.Status = "Gold"; //Promotes member status
                                 Console.WriteLine($"Membership status has been promoted to {g.Member.Status}!");
                             }
                         }
                         else if (g.Member.Status == "Ordinary") //Checks if member status is ordinary
                         {
-                            if (g.Member.Points >= 200)
+                            if (g.Member.Points >= 200) //Checks if member points is 200 or more
                             {
-                                g.Member.Status = "Gold";
+                                g.Member.Status = "Gold"; //Promotes member status
                                 Console.WriteLine($"Membership status has been promoted to {g.Member.Status}!");
                             }
-                            else if (g.Member.Points >= 100 && g.Member.Points < 200)
+                            else if (g.Member.Points >= 100 && g.Member.Points < 200) //Checks if member points is 100 or more but less than 200
                             {
-                                g.Member.Status = "Sliver";
+                                g.Member.Status = "Silver"; //Promotes member status
                                 Console.WriteLine($"Membership status has been promoted to {g.Member.Status}!");
                             }                            
                         }
@@ -726,11 +726,11 @@ void CheckOutGuest() //Created by Lim Jia Xian
             }
             else
             {
-                gFound = false;
+                gFound = false; //Guest is not found
             }
         }
     }
-    if (gFound == false)
+    if (gFound == false) //Guest is not found, displaying guest name does not exist
     {
         Console.WriteLine($"\nName of Guest {gName} does not exist.\n");
     }
