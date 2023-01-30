@@ -725,6 +725,25 @@ void CheckOutGuest() //Created by Lim Jia Xian
     Console.WriteLine();
 }
 
+void MonthlyCharges()
+{
+    while (true)
+    {
+        int year = 0;
+        Console.Write("Enter the year");
+        try
+        {
+            year = Convert.ToInt32(Console.ReadLine());
+        }
+        catch
+        {
+            Console.WriteLine("Invalid year, you have typed in an unknown input, please input a number.");
+            continue;
+        }
+        foreach (G)
+    }
+}
+
 
 int entOpt;
 InitData();
@@ -779,7 +798,7 @@ while (true)
         else if (entOpt == 8)
         {
             Console.WriteLine("\n---- Display monthly & Yearly charged amounts ----\n");
-            Console.WriteLine();
+            MonthlyCharges();
         }
         else
         {
