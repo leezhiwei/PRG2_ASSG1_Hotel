@@ -611,7 +611,6 @@ void ExtendStay()
     Console.WriteLine($"Date has been updated to {s.CheckOutDate.ToString()}"); // print success msg
     return; // end the function
 }
-
 void CheckOutGuest() //Created by Lim Jia Xian
 {   //Advanced Feature B
     DisplayGuestName(guestList);
@@ -737,14 +736,12 @@ void CheckOutGuest() //Created by Lim Jia Xian
     }
     Console.WriteLine();
 }
-
-
 void MonthlyCharges()
 {
     while (true)
     {
         int year = 0;
-        Console.Write("Enter the year");
+        Console.Write("Enter the year ");
         try
         {
             year = Convert.ToInt32(Console.ReadLine());
@@ -754,7 +751,50 @@ void MonthlyCharges()
             Console.WriteLine("Invalid year, you have typed in an unknown input, please input a number.");
             continue;
         }
-        foreach (G)
+        if (year <= 1000 || year >= 9999)
+        {
+            Console.WriteLine("Invalid Year. Please try again.");
+            continue;
+        }
+        
+        bool leapyear = false;
+        if (year % 4  == 0)
+        {
+            leapyear = true;
+        }
+        List<int> thirtyfirstmths = new List<int> { 1, 3, 5, 7, 8, 10, 12 };
+        for (int mth = 1; mth <= 12; mth++)
+        {
+            int endDay = 30;
+            double totalcharge = 0;
+            if (mth == 2)
+            {
+                if (leapyear)
+                {
+                    endDay = 29;
+                }
+                else
+                {
+                    endDay = 28;
+                }
+            }
+            else if (thirtyfirstmths.Contains(mth))
+            {
+                endDay = 31;
+            }
+            DateTime mthStart = Convert.ToDateTime($"1/{mth}/{year}");
+            DateTime mthEnd = Convert.ToDateTime($"{endDay}/{mth}/{year}");
+            foreach (Guest g in guestList)
+            {
+                Stay s = g.HotelStay;
+                if (s.CheckOutDate <= mthEnd && s.CheckOutDate >= mthStart)
+                {
+                    totalcharge += s.CalculateTotal();
+                }
+            }
+            Console.WriteLine($"{mth}/{year}: ${totalcharge:F2}");
+        }
+        break;
     }
 }
 
@@ -824,8 +864,3 @@ while (true)
         Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 8\n");
     }
 }
-
-
-
-
-
