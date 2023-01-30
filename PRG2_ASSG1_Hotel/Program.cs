@@ -25,15 +25,15 @@ void InitData()
         //Adding data into list
         roomlist.Add(values);
     }
-    for (int i = 1; i < guestdata.Length; i++)
+    for (int j = 1; j < guestdata.Length; j++)
     {
-        List<string> values = guestdata[i].Split(',').ToList();
+        List<string> values = guestdata[j].Split(',').ToList();
         //Adding data into list
         guestlist.Add(values);
     }
-    for (int i = 1; i < staysdata.Length; i++)
+    for (int k = 1; k < staysdata.Length; k++)
     {
-        List<string> values = staysdata[i].Split(',').ToList();
+        List<string> values = staysdata[k].Split(',').ToList();
         //Adding data into list
         stayslist.Add(values);
     }
@@ -177,7 +177,7 @@ void DisplayGuest(List<Guest> guestList) //Created by Lim Jia Xian
  {  //Assignment Part 1
     foreach (Guest g in guestList)
     {
-        Console.WriteLine("Name: {0,-10} | Passport number: {1,-10} | Membership status: {2,-10}",g.Name,g.PassportNum,g.Member.Status);
+        Console.WriteLine("Name: {0,-10} | Passport number: {1,-10} | Membership status: {2,-8} | Membership points: {3,-10}",g.Name,g.PassportNum,g.Member.Status,g.Member.Points);
     }
     Console.WriteLine();
 }
