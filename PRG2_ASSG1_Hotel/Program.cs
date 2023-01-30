@@ -197,9 +197,9 @@ bool ValidateNameCheck(string entName) //Created by Lim Jia Xian
     return regex.IsMatch(entName); //Returns false if name contains numbers or special characters, Returns true if name is within the range from A - Z
 }
 
-bool ValidatePassportNumCheck(string entPosNum)
+bool ValidatePassportNumCheck(string entPosNum) //Created by Lim Jia Xian
 {   //Function to check if passport number is valid, containing 2 alphabets and 7 numbers tallying up to 9 characters in length.
-    Regex regex = new Regex(@"^(?!^0+$)[a-zA-Z0-9]{9,9}$");
+    Regex regex = new Regex(@"^[A-Z0-9A-Z]{9}$");
     return regex.IsMatch(entPosNum); //Returns false if passport number is invalid, Returns true if passport number matches the proper values
 }
 void RegisterGuest() //Created by Lim Jia Xian
@@ -238,9 +238,10 @@ void RegisterGuest() //Created by Lim Jia Xian
         
         Console.Write("Guest passport number: ");
         gPN = Console.ReadLine();
-        if (gPN.Trim().Length < 5) //Checks if guest passport number is empty or contains spaces or less than 5 characters in length
+
+        if (ValidatePassportNumCheck(gPN) == false) //Checks if passport number is valid
         {
-            Console.WriteLine("Passport number cannot be empty or less than 5 characters in length. Please try again!\n");
+            Console.WriteLine("\nPassport number should start & end with upper-case letters with 7 numeric digits in between with a total of 9 characters in length. \nPlease try again.\n");
             continue;
         }
         else
@@ -274,9 +275,9 @@ void RegisterGuest() //Created by Lim Jia Xian
         {
             Stay stay = new Stay(); //Creating empty stay object
             Membership membership = new Membership("Ordinary", 0); //Creating a new membership object with ordinary status and 0 points
-            Guest guest = new Guest(gName, gPN, stay, membership); //Creating new guest object
+            Guest guest = new Guest(gName, gPN.ToUpper(), stay, membership); //Creating new guest object
             guestList.Add(guest); //Adding guest to guestList
-            string data = gName + "," + gPN + "," + membership.Status + "," + membership.Points; //Adding guest information into data
+            string data = gName + "," + gPN.ToUpper() + "," + membership.Status + "," + membership.Points; //Adding guest information into data
             using (StreamWriter sw = new StreamWriter("Guests.csv", true))
             {
                 sw.WriteLine(data); //Appending data to Guest.csv
