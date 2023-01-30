@@ -196,7 +196,6 @@ bool ValidateNameCheck(string entName) //Created by Lim Jia Xian
     Regex regex = new Regex(@"^[a-zA-z]+$");
     return regex.IsMatch(entName); //Returns false if name contains numbers or special characters, Returns true if name is within the range from A - Z
 }
-
 bool ValidatePassportNumCheck(string entPosNum) //Created by Lim Jia Xian
 {   //Function to check if passport number is valid, containing 2 alphabets and 7 numbers tallying up to 9 characters in length.
     Regex regex = new Regex(@"^[A-Z0-9A-Z]{9}$");
