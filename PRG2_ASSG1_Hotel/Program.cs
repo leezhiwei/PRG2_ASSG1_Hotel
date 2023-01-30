@@ -720,42 +720,11 @@ void CheckOutGuest() //Created by Lim Jia Xian
     }
     Console.WriteLine();
 }
-void DisplayGuestWithCount()
-{ // Lee Zhi Wei
-    int count = 0; // count for index + 1
-    foreach (Guest g in guestList) // foreach guest
-    {
-        count++; // add 1 to count
-        Console.WriteLine($"{count}) {g.ToString()}"); // print out index num + 1 and details
-        // eg 1) Micheal ...
-    }
-}
+
 void MonthlyCharges()
 {
     while (true)
     {
-        DisplayGuestWithCount();
-        Guest g = null;
-        int choice = 0;
-        Console.Write("Enter which guest object to manipulate. ");
-        try
-        {
-            choice = Convert.ToInt32(Console.ReadLine());
-        }
-        catch
-        {
-            Console.WriteLine("You have typed in an invalid input, please input a number.");
-            continue;
-        }
-        try
-        {
-            g = guestList[choice - 1];
-        }
-        catch
-        {
-            Console.WriteLine("Invalid option, pick a choice from the above list.");
-            continue;
-        }
         int year = 0;
         Console.Write("Enter the year");
         try
@@ -767,7 +736,7 @@ void MonthlyCharges()
             Console.WriteLine("Invalid year, you have typed in an unknown input, please input a number.");
             continue;
         }
-        g.HotelStay.CalculateTotal();
+        foreach (G)
     }
 }
 
@@ -825,7 +794,7 @@ while (true)
         else if (entOpt == 8)
         {
             Console.WriteLine("\n---- Display monthly & Yearly charged amounts ----\n");
-            Console.WriteLine();
+            MonthlyCharges();
         }
         else
         {
