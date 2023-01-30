@@ -177,7 +177,8 @@ void DisplayGuest(List<Guest> guestList) //Created by Lim Jia Xian
  {  //Assignment Part 1
     foreach (Guest g in guestList)
     {
-        Console.WriteLine(g.ToString());
+        Console.WriteLine("Name: {0,-10} | Passport number: {1,-10} | Membership status: {2,-10}",g.Name,g.PassportNum,g.Member.Status);
+        //Console.WriteLine(g.ToString());
     }
     Console.WriteLine();
 }
