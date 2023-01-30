@@ -652,6 +652,8 @@ void CheckOutGuest() //Created by Lim Jia Xian
                     g.Member.RedeemPoints(gPoints);
                     fBill = g.HotelStay.CalculateTotal() - gPoints;
                     Console.WriteLine($"Final bill amount: ${fBill}");
+                    Console.WriteLine("\n----- Press any KEY to make payment -----\n");
+                    Console.ReadLine();
                     g.Member.EarnPoints(fBill);
                     if ((fBill / 10) > 0)
                     {
@@ -680,6 +682,8 @@ void CheckOutGuest() //Created by Lim Jia Xian
                 else
                 {
                     Console.WriteLine($"Final bill amount: ${g.HotelStay.CalculateTotal()}");
+                    Console.WriteLine("\n----- Press any KEY to make payment -----\n");
+                    Console.ReadLine();
                     fBill = g.HotelStay.CalculateTotal();
                     g.Member.EarnPoints(fBill);
                     if ((fBill / 10) > 0)
