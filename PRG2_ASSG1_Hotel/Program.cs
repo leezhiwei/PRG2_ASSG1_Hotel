@@ -610,7 +610,6 @@ void ExtendStay()
     Console.WriteLine($"Date has been updated to {s.CheckOutDate.ToString()}"); // print success msg
     return; // end the function
 }
-
 void CheckOutGuest() //Created by Lim Jia Xian
 {   //Advanced Feature B
     DisplayGuestName(guestList);
@@ -736,8 +735,6 @@ void CheckOutGuest() //Created by Lim Jia Xian
     }
     Console.WriteLine();
 }
-
-
 void MonthlyCharges()
 {
     while (true)
