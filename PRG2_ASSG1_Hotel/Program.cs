@@ -838,7 +838,7 @@ void GuestOrderFood()
 {   //Advanced Feature C, created by both students
     DisplayGuestName(guestList);
     string gName;
-    bool gFound = false;
+    bool gFound = false; // init variables
     int fdChoice;
 
     while (true)
@@ -854,79 +854,208 @@ void GuestOrderFood()
     }
 
     foreach (Guest g in guestList)
-    {
-        if (gName.ToUpper() == g.Name.ToUpper())
+    { 
+        if (gName.ToUpper() == g.Name.ToUpper()) // upper case
         {
-            gFound = true;
-            if (!g.IsCheckedin)
+            gFound = true; // find the guest
+            if (!g.IsCheckedin) // if not checked in
             {
-                Console.WriteLine("Guest not checked in.");
+                Console.WriteLine("Guest not checked in."); // error return
                 return;
             }
             Console.Write("\n------ Displaying Food Options -------\n[1]. Chicken Rice\n[2]. Beef Wellington\n[3]. Carbonara Pasta\n[4]. Tomato Pasta (Vegetarian)\n[5]. Cheese-Baked Rice (Vegetarian)\n--------------------------------------\nPlease enter your Food Choice: ");
-            fdChoice = Convert.ToInt32(Console.ReadLine());
-            if (fdChoice == 1)
+            // food options
+            try
             {
-                int loop = 0;
-                Console.WriteLine("Selected Chicken Rice");
-                Console.Write("Enter quantity: ");
+                fdChoice = Convert.ToInt32(Console.ReadLine()); // readline
+            }
+            catch
+            {
+                Console.WriteLine("Invalid input. Please try again."); // error
+                break; // break the loop
+            }
+            if (fdChoice == 1) // chicken rice
+            {
+                int loop = 0; // how many qty, eg how much loop
+                Console.WriteLine("Selected Chicken Rice"); // selected food
+                Console.Write("Enter quantity: "); // quantity
                 try
-                {
+                { // try convert to number
                     loop = Convert.ToInt32(Console.ReadLine());
                 }
                 catch
-                {
+                { // print error, break
                     Console.WriteLine("Input a number. You have entered other characters.");
                     break;
                 }
                 if (loop < 1)
-                {
+                { // if qty less than 1, error break
                     Console.WriteLine("Input a valid number more than 1");
                     break;
                 }
                 if (loop == 1)
-                {
-                    g.HotelStay.RoomServiceForStay.AddFood(availableFoodOption[4]);
-                    Console.WriteLine("Completed successfully.");
+                { // if only 1
+                    g.HotelStay.RoomServiceForStay.AddFood(availableFoodOption[4]); // add food
+                    Console.WriteLine("Completed successfully."); // completed message
                 }
                 else
                 {
-                    for (int x = 1; x < loop; x++)
-                    {
+                    for (int x = 0; x < loop; x++) // for loop
+                    { // looping to add food object
                         g.HotelStay.RoomServiceForStay.AddFood(availableFoodOption[4]);
-                    }
+                    } // success message
                     Console.WriteLine("Completed successfully.");
+                    break; // break
+                }
+            }
+            else if (fdChoice == 2) // beef wellington
+            {
+                int loop = 0; // how many qty, eg how much loop
+                Console.WriteLine("Selected Beef Wellington"); // selected food
+                Console.Write("Enter quantity: "); // quantity
+                try
+                { // try convert to number
+                    loop = Convert.ToInt32(Console.ReadLine());
+                }
+                catch
+                { // print error, break
+                    Console.WriteLine("Input a number. You have entered other characters.");
                     break;
                 }
-
+                if (loop < 1)
+                { // if qty less than 1, error break
+                    Console.WriteLine("Input a valid number more than 1");
+                    break;
+                }
+                if (loop == 1)
+                { // if only 1
+                    g.HotelStay.RoomServiceForStay.AddFood(availableFoodOption[0]); // add food
+                    Console.WriteLine("Completed successfully."); // completed message
+                }
+                else
+                {
+                    for (int x = 0; x < loop; x++) // for loop
+                    { // looping to add food object
+                        g.HotelStay.RoomServiceForStay.AddFood(availableFoodOption[0]);
+                    } // success message
+                    Console.WriteLine("Completed successfully.");
+                    break; // break
+                }
             }
-            else if (fdChoice == 2)
+            else if (fdChoice == 3) // carbonara
             {
-                Console.WriteLine("Selected Beef Wellington");
+                int loop = 0; // how many qty, eg how much loop
+                Console.WriteLine("Selected Carbonara Pasta"); // selected food
+                Console.Write("Enter quantity: "); // quantity
+                try
+                { // try convert to number
+                    loop = Convert.ToInt32(Console.ReadLine());
+                }
+                catch
+                { // print error, break
+                    Console.WriteLine("Input a number. You have entered other characters.");
+                    break;
+                }
+                if (loop < 1)
+                { // if qty less than 1, error break
+                    Console.WriteLine("Input a valid number more than 1");
+                    break;
+                }
+                if (loop == 1)
+                { // if only 1
+                    g.HotelStay.RoomServiceForStay.AddFood(availableFoodOption[1]); // add food
+                    Console.WriteLine("Completed successfully."); // completed message
+                }
+                else
+                {
+                    for (int x = 0; x < loop; x++) // for loop
+                    { // looping to add food object
+                        g.HotelStay.RoomServiceForStay.AddFood(availableFoodOption[1]);
+                    } // success message
+                    Console.WriteLine("Completed successfully.");
+                    break; // break
+                }
             }
-            else if (fdChoice == 3)
-            {
-                Console.WriteLine("Selected Carbonara Pasta");
-            }
-            else if (fdChoice == 4)
+            else if (fdChoice == 4) // tomato pasta
             {
                 Console.WriteLine("Selected Tomato Pasta (Vegetarian)");
+                int loop = 0; // how many qty, eg how much loop
+                Console.WriteLine("Selected Carbonara Pasta"); // selected food
+                Console.Write("Enter quantity: "); // quantity
+                try
+                { // try convert to number
+                    loop = Convert.ToInt32(Console.ReadLine());
+                }
+                catch
+                { // print error, break
+                    Console.WriteLine("Input a number. You have entered other characters.");
+                    break;
+                }
+                if (loop < 1)
+                { // if qty less than 1, error break
+                    Console.WriteLine("Input a valid number more than 1");
+                    break;
+                }
+                if (loop == 1)
+                { // if only 1
+                    g.HotelStay.RoomServiceForStay.AddFood(availableFoodOption[2]); // add food
+                    Console.WriteLine("Completed successfully."); // completed message
+                }
+                else
+                {
+                    for (int x = 0; x < loop; x++) // for loop
+                    { // looping to add food object
+                        g.HotelStay.RoomServiceForStay.AddFood(availableFoodOption[2]);
+                    } // success message
+                    Console.WriteLine("Completed successfully.");
+                    break; // break
+                }
             }
-            else if (fdChoice == 5)
+            else if (fdChoice == 5) // cheese baked rice
             {
-                Console.WriteLine("Selected Cheese-Baked Rice (Vegetarian)");
+                int loop = 0; // how many qty, eg how much loop
+                Console.WriteLine("Selected Cheese-Baked Rice (Vegetarian)"); // selected food
+                Console.Write("Enter quantity: "); // quantity
+                try
+                { // try convert to number
+                    loop = Convert.ToInt32(Console.ReadLine());
+                }
+                catch
+                { // print error, break
+                    Console.WriteLine("Input a number. You have entered other characters.");
+                    break;
+                }
+                if (loop < 1)
+                { // if qty less than 1, error break
+                    Console.WriteLine("Input a valid number more than 1");
+                    break;
+                }
+                if (loop == 1)
+                { // if only 1
+                    g.HotelStay.RoomServiceForStay.AddFood(availableFoodOption[3]); // add food
+                    Console.WriteLine("Completed successfully."); // completed message
+                }
+                else
+                {
+                    for (int x = 0; x < loop; x++) // for loop
+                    { // looping to add food object
+                        g.HotelStay.RoomServiceForStay.AddFood(availableFoodOption[3]);
+                    } // success message
+                    Console.WriteLine("Completed successfully.");
+                    break; // break
+                }
             }
-            else
-            {
+            else // if above 5
+            { // error
                 Console.WriteLine("Please enter a numeric choice from 1 - 5 only");
-                continue;
+                continue; // continue
             }
         }
     }
 
-    if (gFound == false)
+    if (gFound == false) // if no guest
     {
-        Console.WriteLine($"\nName of Guest {gName} does not exist.\n");
+        Console.WriteLine($"\nName of Guest {gName} does not exist.\n"); // error
     }
 }
 void ShowRoomServiceObj()
