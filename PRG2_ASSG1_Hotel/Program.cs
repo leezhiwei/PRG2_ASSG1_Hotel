@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 List<Guest> guestList = new List<Guest>();
-List<Room> availrooms = new List<Room>();
+List<Room> availRooms = new List<Room>();
 List<Room> occupiedrooms = new List<Room>();
 List<Food> availableFoodOption = new List<Food>();
 //Initialise Data from CSV
@@ -109,12 +109,12 @@ void InitData()
             }
         }
     }
-    availrooms = AvailRoom(); // get available room list
+    availRooms = AvailRoom(); // get available room list
     foreach (List<string> ro in roomlist) // add in other avail rooms
     {
         bool isInList = false;
         bool occupied = false; // set booleans
-        foreach (Room room in availrooms)
+        foreach (Room room in availRooms)
         {
             if (room.RoomNumber == Convert.ToInt32(ro[1])) // if already in
             {
@@ -141,13 +141,13 @@ void InitData()
         if (ro[0] == "Standard") // if type is standard
         { // else not occupied or already in list
             StandardRoom room = new StandardRoom(Convert.ToInt32(ro[1]), ro[2], Convert.ToDouble(ro[3]), true);
-            availrooms.Add(room); //create and add
+            availRooms.Add(room); //create and add
 
         }
         else if (ro[0] == "Deluxe") // if type is deluxe
         { // else not occupied or already in list
             DeluxeRoom room = new DeluxeRoom(Convert.ToInt32(ro[1]), ro[2], Convert.ToDouble(ro[3]), true);
-            availrooms.Add(room); // create and add
+            availRooms.Add(room); // create and add
         }
     }
 }
@@ -346,7 +346,7 @@ List<Guest> DisplayGuestsCIned(List<Guest> guestList)
 Room AvailRoomSel()
 { // Lee Zhi Wei
     Room finalobj = null; // final room object to return
-    DisplayRmCIn(availrooms); // dont store the list as variable, no use
+    DisplayRmCIn(availRooms); // dont store the list as variable, no use
     Console.Write("Please select a room: "); // prompt to select room
     int choice = -1; // init with invalid value.
     Room chosenr = null; // init the chosen room variable, from list
@@ -361,7 +361,7 @@ Room AvailRoomSel()
     }
     try
     { // try to get object from list
-        chosenr = availrooms[choice - 1];
+        chosenr = availRooms[choice - 1];
     }
     catch
     { // if unable, print error, return null (continue loop)
@@ -403,7 +403,7 @@ Room AvailRoomSel()
             Console.WriteLine("You have typed in an invalid option.");
             return null;
         }
-        availrooms.RemoveAt(choice - 1); // remove room from available list
+        availRooms.RemoveAt(choice - 1); // remove room from available list
         r.IsAvail = false; // set room object to not avail
         finalobj = r; // put into finalobj for return
     }
@@ -426,7 +426,7 @@ Room AvailRoomSel()
             Console.WriteLine("You have typed in an invalid option.");
             return null;
         }
-        availrooms.RemoveAt(choice - 1); // remove the room from list
+        availRooms.RemoveAt(choice - 1); // remove the room from list
         r.IsAvail = false; // set available to false
         finalobj = r; // put into final object
     }
@@ -1185,7 +1185,7 @@ while (true)
         else if (entOpt == 2)
         {
             Console.WriteLine("\n------ Displaying all available rooms ------\n");
-            ShowAvailRoom(availrooms);
+            ShowAvailRoom(availRooms);
         }
         else if (entOpt == 3)
         {
