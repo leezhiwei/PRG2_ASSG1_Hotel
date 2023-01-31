@@ -1,5 +1,5 @@
-﻿// Zhi Wei does 2,4,6
-// Jia Xian does 1,3,5
+﻿// Zhi Wei does 2,4,6, Advanced A
+// Jia Xian does 1,3,5, Advanced B
 using PRG2_ASSG1_Hotel;
 using System;
 using System.Collections.Generic;
@@ -10,13 +10,13 @@ List<Guest> guestList = new List<Guest>();
 List<Room> availrooms = new List<Room>();
 List<Room> occupiedrooms = new List<Room>();
 List<Food> availableFoodOption = new List<Food>();
-//Initialise Data from csv files
+//Initialise Data from CSV
 void InitData()
 {
     List<List<string>> roomlist = new List<List<string>>();
     List<List<string>> guestlist = new List<List<string>>(); // init string-list var
     List<List<string>> stayslist = new List<List<string>>();
-    //Reading data from csv
+    //Reading data from CSV files
     string[] roomdata = File.ReadAllLines("Rooms.csv");
     string[] guestdata = File.ReadAllLines("Guests.csv"); // readalllines of CSV
     string[] staysdata = File.ReadAllLines("Stays.csv");
@@ -214,12 +214,12 @@ void RegisterGuest() //Created by Lim Jia Xian
         Console.Write("Guest name: ");
         gName = Console.ReadLine();
 
-        if (ValidateNameCheck(gName) == false) //Checks if name entered was filled with numbers.
+        if (ValidateNameCheck(gName) == false) //Checks if name entered was filled with numbers or special characters.
         {
             Console.WriteLine("\nName should not contain any numbers or special characters.\n");
             continue;
         }
-        else if (gName == null || gName.Length < 3 || gName.Trim().Length < 3) //If the name entered is empty or less than 3 characters or name filled with spaces
+        else if (gName.Length < 3 || gName.Trim().Length < 3) //If the name entered is empty or less than 3 characters or name filled with spaces
         {
             Console.WriteLine("\nThe guest name should not be empty or less than 3 characters in length. Please try again!\n");
             continue;
@@ -538,16 +538,16 @@ void DisplayInfoguest() //Created by Lim Jia Xian
 
     foreach (Guest g in guestList)
     {
-        if (gName.ToUpper() == g.Name.ToUpper())
+        if (gName.ToUpper() == g.Name.ToUpper()) //Checks if name entered matches any names in record
         {
             gFound = true;
             Console.WriteLine($"\n--- All details of guest {g.Name} ---\n");
             Console.WriteLine($"Name: {g.Name}, Passport number: {g.PassportNum}, Membership {g.Member.ToString()}\n");
-            if (g.HotelStay.CheckInDate == Convert.ToDateTime("1/1/0001 12:00:00 am") || g.HotelStay.CheckOutDate == Convert.ToDateTime("1/1/0001 12:00:00 am"))
+            if (g.HotelStay.CheckInDate == Convert.ToDateTime("1/1/0001 12:00:00 am") || g.HotelStay.CheckOutDate == Convert.ToDateTime("1/1/0001 12:00:00 am")) //Checks if check-in date and check-out date is invalid
             {
                 Console.WriteLine("Guest has no stay information.");
             }
-            else
+            else //If there are valid check-in & check-out dates, display hotel stay information with check in status
             {
                 Console.WriteLine($"{g.HotelStay}");
                 Console.WriteLine($"\nCheck in status: {g.IsCheckedin}");
@@ -559,7 +559,7 @@ void DisplayInfoguest() //Created by Lim Jia Xian
             gFound= false;
         }
     }
-    if (gFound == false)
+    if (gFound == false) //If Guest found is false, display guest does not exist
     {
         Console.WriteLine($"\nName of Guest {gName} does not exist.\n");
     }
@@ -640,101 +640,98 @@ void CheckOutGuest() //Created by Lim Jia Xian
 
     foreach (Guest g in guestList)
     {
-        if (gName.ToUpper() == g.Name.ToUpper() && g.IsCheckedin == false) //Checks for guest name and guest check in status
+        if (gName.ToUpper() == g.Name.ToUpper() && g.IsCheckedin == false) //Checks for guest name and check in status. If guest name found is not checked in, display the message
         {
             Console.WriteLine($"\nUnable to check out!\nGuest of the name {gName} is not checked in yet.\n");
             gFound = true; //Guest found is considered to be true, just that the guest is not able to check out at this moment.
             break;
         }
-        else
+        else if(gName.ToUpper() == g.Name.ToUpper() && g.IsCheckedin == true) //Checks for guest name and check in status is true
         {
-            if (gName.ToUpper() == g.Name.ToUpper()) //Checks for guest name
+            gFound = true;
+            Console.WriteLine($"\n--- All details of guest {g.Name} ---\n");
+            Console.WriteLine($"Name: {g.Name}, Passport number: {g.PassportNum}\n");
+            Console.WriteLine($"{g.HotelStay}"); //Displaying hotel stay information
+            Console.WriteLine($"\nTotal bill amount: ${g.HotelStay.CalculateTotal()}");
+            Console.WriteLine($"\nMembership {g.Member.ToString()}");
+            if (g.Member.Status == "Silver" || g.Member.Status == "Gold") //If member status is silver or gold
             {
-                gFound = true;
-                Console.WriteLine($"\n--- All details of guest {g.Name} ---\n");
-                Console.WriteLine($"Name: {g.Name}, Passport number: {g.PassportNum}\n");
-                Console.WriteLine($"{g.HotelStay}");
-                Console.WriteLine($"\nTotal bill amount: ${g.HotelStay.CalculateTotal()}");
-                Console.WriteLine($"\nMembership {g.Member.ToString()}");
-                if (g.Member.Status == "Silver" || g.Member.Status == "Gold") //If member status is silver or gold
+                Console.WriteLine("You are elligible to redeem points!");
+                Console.Write("Enter the amount of points to offset the total bill amount: ");
+                gPoints = Convert.ToInt32(Console.ReadLine());
+                g.Member.RedeemPoints(gPoints);
+                fBill = g.HotelStay.CalculateTotal() - gPoints; //Final bill is calculated by total - guest redeem points
+                Console.WriteLine($"Final bill amount: ${fBill}");
+                Console.WriteLine("\n----- Press any KEY to make payment -----\n");
+                Console.ReadLine();
+                g.Member.EarnPoints(fBill); //Earning points based off the final bill
+                if ((fBill / 10) >= 1) //Checks if final bill / 10 returns a value more than 0
                 {
-                    Console.WriteLine("You are elligible to redeem points!");
-                    Console.Write("Enter the amount of points to offset the total bill amount: ");
-                    gPoints = Convert.ToInt32(Console.ReadLine());
-                    g.Member.RedeemPoints(gPoints);
-                    fBill = g.HotelStay.CalculateTotal() - gPoints; //Final bill is calculated by total - guest redeem points
-                    Console.WriteLine($"Final bill amount: ${fBill}");
-                    Console.WriteLine("\n----- Press any KEY to make payment -----\n");
-                    Console.ReadLine();
-                    g.Member.EarnPoints(fBill);
-                    if ((fBill / 10) >= 1) //Checks if final bill / 10 returns a value more than 0
+                    double ePoints = fBill / 10; //Points earned = final bill / 10
+                    Console.WriteLine($"Earned points: {ePoints}"); //Displaying points earned
+                    if (g.Member.Status == "Silver") //Checks if member status is silver
                     {
-                        double ePoints = fBill / 10; //Points earned = final bill / 10
-                        Console.WriteLine($"Earned points: {ePoints}");
-                        if (g.Member.Status == "Silver") //Checks if member status is silver
+                        if (g.Member.Points >= 200) //Checks if member points is 200 or more
                         {
-                            if (g.Member.Points >= 200) //Checks if member points is 200 or more
-                            {
-                                g.Member.Status = "Gold"; //Promotes member status
-                                Console.WriteLine($"Membership status has been promoted to {g.Member.Status}!");
-                            }
+                            g.Member.Status = "Gold"; //Promotes member status
+                            Console.WriteLine($"Membership status has been promoted to {g.Member.Status}!");
                         }
                     }
-                    else
-                    {
-                        double ePoints = 0;
-                        Console.WriteLine($"Earned points: {ePoints}");
-                    }
-                    Console.WriteLine($"\nCurrent membership points: {g.Member.Points}");
                 }
-                else
+                else // if fbill / 10 returns a value lesser than 1, points earned = 0
                 {
-                    Console.WriteLine($"Final bill amount: ${g.HotelStay.CalculateTotal()}");
-                    Console.WriteLine("\n------ Press any KEY to make payment ------");
-                    Console.ReadLine();
-                    fBill = g.HotelStay.CalculateTotal();
-                    g.Member.EarnPoints(fBill);
-                    if ((fBill / 10) >= 1)
-                    {
-                        double ePoints = fBill / 10;
-                        Console.WriteLine($"Earned points: {ePoints}");
-                        if (g.Member.Status == "Silver") //Checks if member status is silver
-                        {
-                            if (g.Member.Points >= 200) //Checks if member points is 200 or more
-                            {
-                                g.Member.Status = "Gold"; //Promotes member status
-                                Console.WriteLine($"Membership status has been promoted to {g.Member.Status}!");
-                            }
-                        }
-                        else if (g.Member.Status == "Ordinary") //Checks if member status is ordinary
-                        {
-                            if (g.Member.Points >= 200) //Checks if member points is 200 or more
-                            {
-                                g.Member.Status = "Gold"; //Promotes member status
-                                Console.WriteLine($"Membership status has been promoted to {g.Member.Status}!");
-                            }
-                            else if (g.Member.Points >= 100 && g.Member.Points < 200) //Checks if member points is 100 or more but less than 200
-                            {
-                                g.Member.Status = "Silver"; //Promotes member status
-                                Console.WriteLine($"Membership status has been promoted to {g.Member.Status}!");
-                            }                            
-                        }
-                    }
-                    else
-                    {
-                        double ePoints = 0;
-                        Console.WriteLine($"Earned points: {ePoints}");
-                    }
-                    Console.WriteLine($"\nCurrent membership points: {g.Member.Points}");
+                    double ePoints = 0; //Earned points is zero
+                    Console.WriteLine($"Earned points: {ePoints}");
                 }
+                Console.WriteLine($"\nCurrent membership points: {g.Member.Points}");
                 g.IsCheckedin = false; //Update guest check in status to false
                 Console.WriteLine($"\n--- Guest name {g.Name} Check-Out successful ---\n");
                 break;
             }
             else
             {
-                gFound = false; //Guest is not found
+                Console.WriteLine($"Final bill amount: ${g.HotelStay.CalculateTotal()}");
+                Console.WriteLine("\n------ Press any KEY to make payment ------");
+                Console.ReadLine();
+                fBill = g.HotelStay.CalculateTotal(); //Calculating final bill
+                g.Member.EarnPoints(fBill); //Earning points based off final bill
+                if ((fBill / 10) >= 1) //Checks if final bill / 10 returns a value more than or equals to 1
+                {
+                    double ePoints = fBill / 10; //Points earned will be based off final bill / 10
+                    Console.WriteLine($"Earned points: {ePoints}"); //Displaying points earned
+                    if (g.Member.Status == "Silver") //Checks if member status is silver
+                    {
+                        if (g.Member.Points >= 200) //Checks if member points is 200 or more
+                        {
+                            g.Member.Status = "Gold"; //Promotes member status
+                            Console.WriteLine($"Membership status has been promoted to {g.Member.Status}!");
+                        }
+                    }
+                    else if (g.Member.Status == "Ordinary") //Checks if member status is ordinary
+                    {
+                        if (g.Member.Points >= 200) //Checks if member points is 200 or more
+                        {
+                            g.Member.Status = "Gold"; //Promotes member status
+                            Console.WriteLine($"Membership status has been promoted to {g.Member.Status}!");
+                        }
+                        else if (g.Member.Points >= 100 && g.Member.Points < 200) //Checks if member points is 100 or more but less than 200
+                        {
+                            g.Member.Status = "Silver"; //Promotes member status
+                            Console.WriteLine($"Membership status has been promoted to {g.Member.Status}!");
+                        }
+                    }
+                }
+                else // if fbill / 10 returns a value lesser than 1, points earned = 0
+                {
+                    double ePoints = 0; //Earned points is zero
+                    Console.WriteLine($"Earned points: {ePoints}");
+                }
+                Console.WriteLine($"\nCurrent membership points: {g.Member.Points}");
+                g.IsCheckedin = false; //Update guest check in status to false
+                Console.WriteLine($"\n--- Guest name {g.Name} Check-Out successful ---\n");
+                break;
             }
+
         }
     }
     if (gFound == false) //Guest is not found, displaying guest name does not exist
@@ -744,7 +741,7 @@ void CheckOutGuest() //Created by Lim Jia Xian
     Console.WriteLine();
 }
 void MonthlyCharges()
-{
+{   //Advanced Feature A, Lee Zhi Wei
     List<string> months = new List<String>{"January", "February", "March", "April", "May",
     "June", "July", "August", "September", "October", "November", "December"};
     while (true)
@@ -825,7 +822,7 @@ List<Food> InitFoodList()
     return foodList;
 }
 void GuestOrderFood()
-{   //Advanced Feature C
+{   //Advanced Feature C, created by both students
     DisplayGuestName(guestList);
     string gName;
     bool gFound = false;
