@@ -198,7 +198,6 @@ void DisplayGuestName(List<Guest> guestList) //Created by Lim Jia Xian
     }
     Console.WriteLine();
 }
-
 Guest SearchG(List<Guest> guestList, string gName) //Created by Lim Jia Xian
 {   //Searches for the name if it matches the records in guest list
     foreach (Guest g in guestList)
@@ -210,7 +209,6 @@ Guest SearchG(List<Guest> guestList, string gName) //Created by Lim Jia Xian
     }
     return null;
 }
-
 Guest SearchPN(List<Guest> guestList, string gPN) //Created by Lim Jia Xian
 {   //Searches for the passport number if it matches the records in guest list
     foreach (Guest g in guestList)
@@ -222,7 +220,6 @@ Guest SearchPN(List<Guest> guestList, string gPN) //Created by Lim Jia Xian
     }
     return null;
 }
-
 bool ValidateNameCheck(string entName) //Created by Lim Jia Xian
 {   //Function to check if name contains numbers or special characters
     Regex regex = new Regex(@"^[a-zA-z]+$");
