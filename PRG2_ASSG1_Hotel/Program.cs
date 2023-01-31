@@ -1239,6 +1239,6 @@ while (true)
     }
     catch (FormatException ex)
     {
-        Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 10\n");
+        Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 11\n");
     }
 }
