@@ -737,6 +737,8 @@ void CheckOutGuest() //Created by Lim Jia Xian
 }
 void MonthlyCharges()
 {
+    List<string> months = new List<String>{"January", "February", "March", "April", "May",
+    "June", "July", "August", "September", "October", "November", "December"};
     while (true)
     {
         int year = 0;
@@ -791,7 +793,7 @@ void MonthlyCharges()
                     totalcharge += s.CalculateTotal();
                 }
             }
-            Console.WriteLine($"{mth}/{year}: ${totalcharge:F2}");
+            Console.WriteLine($"{months[mthEnd.Month-1]} {year}: ${totalcharge:F2}");
         }
         break;
     }
