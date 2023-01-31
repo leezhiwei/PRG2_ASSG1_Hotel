@@ -838,6 +838,11 @@ void GuestOrderFood()
         if (gName.ToUpper() == g.Name.ToUpper())
         {
             gFound = true;
+            if (!g.IsCheckedin)
+            {
+                Console.WriteLine("Guest not checked in.");
+                return;
+            }
             Console.Write("\n------ Displaying Food Options -------\n[1]. Chicken Rice\n[2]. Beef Wellington\n[3]. Carbonara Pasta\n[4]. Tomato Pasta (Vegetarian)\n[5]. Cheese-Baked Rice (Vegetarian)\n--------------------------------------\nPlease enter your Food Choice: ");
             fdChoice = Convert.ToInt32(Console.ReadLine());
             if (fdChoice == 1)
@@ -931,6 +936,7 @@ void ShowRoomServiceObj()
     Console.WriteLine(g.HotelStay.RoomServiceForStay.ToString());
     Console.WriteLine($"Total charge for RoomService: ${g.HotelStay.RoomServiceForStay.CalculateFoodCharges():F2}");
 }
+
 int entOpt;
 InitData();
 availableFoodOption = InitFoodList();
