@@ -800,6 +800,66 @@ void MonthlyCharges()
 }
 
 
+void GuestOrderFood()
+{   //Advanced Feature C
+    DisplayGuestName(guestList);
+    string gName;
+    bool gFound = false;
+    int fdChoice;
+
+    while (true)
+    {
+        Console.Write("\nPlease enter Guest name: ");
+        gName = Console.ReadLine();
+        if (ValidateNameCheck(gName) == false) //Checks if name entered was filled with numbers.
+        {
+            Console.WriteLine("\nName should not contain any numbers or special characters.\n");
+            continue;
+        }
+        break;
+    }
+
+    foreach (Guest g in guestList)
+    {
+        if (gName.ToUpper() == g.Name.ToUpper())
+        {
+            gFound = true;
+            Console.Write("\n------ Displaying Food Options -------\n[1]. Chicken Rice\n[2]. Beef Wellington\n[3]. Carbonara Pasta\n[4]. Tomato Pasta (Vegetarian)\n[5]. Cheese-Baked Rice (Vegetarian)\n--------------------------------------\nPlease enter your Food Choice: ");
+            fdChoice = Convert.ToInt32(Console.ReadLine());
+            if (fdChoice == 1)
+            {
+                Console.Write("Selected Chicken Rice\n------------------\nEnter quantity: ");
+            }
+            else if (fdChoice == 2)
+            {
+                Console.WriteLine("Selected Beef Wellington");
+            }
+            else if (fdChoice == 3)
+            {
+                Console.WriteLine("Selected Carbonara Pasta");
+            }
+            else if (fdChoice == 4)
+            {
+                Console.WriteLine("Selected Tomato Pasta (Vegetarian)");
+            }
+            else if (fdChoice == 5)
+            {
+                Console.WriteLine("Selected Cheese-Baked Rice (Vegetarian)");
+            }
+            else
+            {
+                Console.WriteLine("Please enter a numeric choice from 1 - 5 only");
+                continue;
+            }
+        }
+    }
+
+    if (gFound == false)
+    {
+        Console.WriteLine($"\nName of Guest {gName} does not exist.\n");
+    }
+}
+
 int entOpt;
 InitData();
 while (true)
@@ -807,7 +867,7 @@ while (true)
     try
     {
         Console.WriteLine("------ Hotel Guest Management System ------");
-        Console.WriteLine("[1]. Display all guests\n[2]. Display all available rooms\n[3]. Register guest\n[4]. Check-in guest\n[5]. Check-out guest\n[6]. Display all details for guest\n[7]. Extend days for stay\n[8]. Display monthly & Yearly charged amounts\n[0]. Quit Hotal Guest Management System");
+        Console.WriteLine("[1]. Display all Guests\n[2]. Display all available rooms\n[3]. Register Guest\n[4]. Check-In Guest\n[5]. Check-Out Guest\n[6]. Room Service for Guests\n[7]. Display all details for guest\n[8]. Extend days for stay\n[9]. Display Monthly & Yearly charged amounts\n[0]. Quit Hotal Guest Management System");
         Console.Write("-------------------------------------------\nPlease enter your option: ");
         entOpt = Convert.ToInt32(Console.ReadLine());
         if (entOpt == 0)
@@ -842,26 +902,31 @@ while (true)
         }
         else if (entOpt == 6)
         {
-            Console.WriteLine("\n--- Displaying name of guests ---\n");
-            DisplayInfoguest();
+            Console.WriteLine("\n--- Displaying name of Guests ---\n");
+            GuestOrderFood();
         }
         else if (entOpt == 7)
+        {
+            Console.WriteLine("\n--- Displaying name of Guests ---\n");
+            DisplayInfoguest();
+        }
+        else if (entOpt == 8)
         {
             Console.WriteLine("\n------ Extending days for stay ------\n");
             ExtendStay();
         }
-        else if (entOpt == 8)
+        else if (entOpt == 9)
         {
             Console.WriteLine("\n---- Display monthly & Yearly charged amounts ----\n");
             MonthlyCharges();
         }
         else
         {
-            Console.WriteLine("\nPlease enter a numeric value from 0 - 8\n");
+            Console.WriteLine("\nPlease enter a numeric value from 0 - 9\n");
         }
     }
     catch (FormatException ex)
     {
-        Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 8\n");
+        Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 9\n");
     }
 }
