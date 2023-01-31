@@ -192,6 +192,31 @@ void DisplayGuestName(List<Guest> guestList) //Created by Lim Jia Xian
     }
     Console.WriteLine();
 }
+
+Guest SearchG(List<Guest> guestList, string gName) //Created by Lim Jia Xian
+{   //Searches for the name if it matches the records in guest list
+    foreach (Guest g in guestList)
+    {
+        if (g.Name.ToUpper() == gName.ToUpper()) //If guest name is found
+        {
+            return g; //Return Guest Object
+        }
+    }
+    return null;
+}
+
+Guest SearchPN(List<Guest> guestList, string gPN) //Created by Lim Jia Xian
+{   //Searches for the passport number if it matches the records in guest list
+    foreach (Guest g in guestList)
+    {
+        if (g.PassportNum.ToUpper() == gPN.ToUpper()) //If guest passport number is found
+        {
+            return g; //Return Guest Object
+        }
+    }
+    return null;
+}
+
 bool ValidateNameCheck(string entName) //Created by Lim Jia Xian
 {   //Function to check if name contains numbers or special characters
     Regex regex = new Regex(@"^[a-zA-z]+$");
@@ -206,8 +231,8 @@ void RegisterGuest() //Created by Lim Jia Xian
 {   //Assignment Part 3
     while (true)
     {
-        string gName;
-        string gPN;
+        string gName = "";
+        string gPN = "";
         bool gDup = false;
         bool gPDup = false;
         Console.WriteLine("Please enter the following information\n");
@@ -224,35 +249,29 @@ void RegisterGuest() //Created by Lim Jia Xian
             Console.WriteLine("\nThe guest name should not be empty or less than 3 characters in length. Please try again!\n");
             continue;
         }
-        else
+        else //Continues if guest name was valid
         {
-            foreach (Guest g in guestList)
+            Guest guestN = SearchG(guestList, gName); //Searches the guest name
+            if (guestN != null) //Checks if the name is exactly the same with registered guest names
             {
-                if (g.Name.ToUpper() == gName.ToUpper()) //Checks if the name is exactly the same with registered guest names
-                {
-                    gDup = true; //Guest name duplicate changes to true
-                    break;
-                }
+                gDup = true; //Guest name duplicate changes to true
             }
         }
         
         Console.Write("Guest passport number: ");
         gPN = Console.ReadLine();
 
-        if (ValidatePassportNumCheck(gPN) == false) //Checks if passport number is valid
+        if (ValidatePassportNumCheck(gPN) == false) //Checks if passport number is invalid and does not follow the format of 2 letters and 7 digits
         {
             Console.WriteLine("\nPassport number should start & end with upper-case letters with 7 numeric digits in between with a total of 9 characters in length. \nPlease try again.\n");
             continue;
         }
-        else
+        else //Continues if passport number is valid
         {
-            foreach (Guest g in guestList)
+            Guest guestPN = SearchPN(guestList, gPN); //Searches the guest passport number
+            if (guestPN != null) //If passport number matches has been found
             {
-                if (g.PassportNum.ToUpper() == gPN.ToUpper()) //Checks if the passport num is exactly the same with registered passport nums
-                {
-                    gPDup = true; //Guest passport num duplicate changes to true
-                    break;
-                }
+                gPDup = true; //Guest passport num duplicate changes to true
             }
         }
         
@@ -536,29 +555,23 @@ void DisplayInfoguest() //Created by Lim Jia Xian
         break;
     }
 
-    foreach (Guest g in guestList)
+    Guest guestN = SearchG(guestList, gName); //Searches the guest name
+    if (guestN != null) //Checks if the name matches any records in guest list, if so it will not return a null value. 
     {
-        if (gName.ToUpper() == g.Name.ToUpper()) //Checks if name entered matches any names in record
+        gFound = true; //Guest name duplicate changes to true
+        Console.WriteLine($"\n--- All details of guest {guestN.Name} ---\n");
+        Console.WriteLine($"Name: {guestN.Name}, Passport number: {guestN.PassportNum}, Membership {guestN.Member.ToString()}\n");
+        if (guestN.HotelStay.CheckInDate == Convert.ToDateTime("1/1/0001 12:00:00 am") || guestN.HotelStay.CheckOutDate == Convert.ToDateTime("1/1/0001 12:00:00 am")) //Checks if check-in date and check-out date is invalid
         {
-            gFound = true;
-            Console.WriteLine($"\n--- All details of guest {g.Name} ---\n");
-            Console.WriteLine($"Name: {g.Name}, Passport number: {g.PassportNum}, Membership {g.Member.ToString()}\n");
-            if (g.HotelStay.CheckInDate == Convert.ToDateTime("1/1/0001 12:00:00 am") || g.HotelStay.CheckOutDate == Convert.ToDateTime("1/1/0001 12:00:00 am")) //Checks if check-in date and check-out date is invalid
-            {
-                Console.WriteLine("Guest has no stay information.");
-            }
-            else //If there are valid check-in & check-out dates, display hotel stay information with check in status
-            {
-                Console.WriteLine($"{g.HotelStay}");
-                Console.WriteLine($"\nCheck in status: {g.IsCheckedin}");
-            }
-            break;
+            Console.WriteLine("Guest has no stay information.");
         }
-        else
+        else //If there are valid check-in & check-out dates, display hotel stay information with check in status
         {
-            gFound= false;
+            Console.WriteLine($"{guestN.HotelStay}");
+            Console.WriteLine($"\nCheck in status: {guestN.IsCheckedin}");
         }
     }
+
     if (gFound == false) //If Guest found is false, display guest does not exist
     {
         Console.WriteLine($"\nName of Guest {gName} does not exist.\n");
