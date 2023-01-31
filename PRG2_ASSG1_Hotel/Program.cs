@@ -175,7 +175,7 @@ List<Room> AvailRoom()
     return AvailableRms; // return the list
 }
 void DisplayGuest(List<Guest> guestList) //Created by Lim Jia Xian
- {  //Assignment Part 1
+ {  //Assignment Part 1, Displaying All Guests
     foreach (Guest g in guestList)
     {
         Console.WriteLine("Name: {0,-10} | Passport number: {1,-10} | Membership status: {2,-8} | Membership points: {3,-10}",g.Name,g.PassportNum,g.Member.Status,g.Member.Points);
@@ -228,7 +228,7 @@ bool ValidatePassportNumCheck(string entPosNum) //Created by Lim Jia Xian
     return regex.IsMatch(entPosNum); //Returns false if passport number is invalid, Returns true if passport number matches the proper values
 }
 void RegisterGuest() //Created by Lim Jia Xian
-{   //Assignment Part 3
+{   //Assignment Part 3, Registering Guest
     while (true)
     {
         string gName = "";
@@ -538,7 +538,7 @@ void CheckIn(List<Guest> glist)
     }
 }
 void DisplayInfoguest() //Created by Lim Jia Xian
-{   //Assignment Part 5
+{   //Assignment Part 5, Display all details of Guest
     DisplayGuestName(guestList);
     string gName;
     bool gFound = false;
@@ -632,7 +632,7 @@ void ExtendStay()
     return; // end the function
 }
 void CheckOutGuest() //Created by Lim Jia Xian
-{   //Advanced Feature B
+{   //Advanced Feature B, Check-Out Guest
     DisplayGuestName(guestList);
     int gPoints;
     double fBill;
@@ -761,7 +761,7 @@ void MonthlyCharges()
     {
         double yearlytotal = 0;
         int year = 0;
-        Console.Write("Enter the year ");
+        Console.Write("Enter the year: ");
         try
         {
             year = Convert.ToInt32(Console.ReadLine());
@@ -863,7 +863,7 @@ void GuestOrderFood()
                 Console.WriteLine("Guest not checked in.");
                 return;
             }
-            Console.Write("\n------ Displaying Food Options -------\n[1]. Chicken Rice\n[2]. Beef Wellington\n[3]. Carbonara Pasta\n[4]. Tomato Pasta (Vegetarian)\n[5]. Cheese-Baked Rice (Vegetarian)\n--------------------------------------\nPlease enter your Food Choice: ");
+            Console.Write("\n----------- Displaying Food Options ------------\n[1]. Chicken Rice, Price: $15\n[2]. Beef Wellington, Price: $50\n[3]. Carbonara Pasta, Price: $25\n[4]. Tomato Pasta (Vegetarian), Price: $20\n[5]. Cheese-Baked Rice (Vegetarian), Price: $11\n------------------------------------------------\nPlease enter your Food Choice: ");
             fdChoice = Convert.ToInt32(Console.ReadLine());
             if (fdChoice == 1)
             {
@@ -1031,6 +1031,6 @@ while (true)
     }
     catch (FormatException ex)
     {
-        Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 9\n");
+        Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 10\n");
     }
 }
