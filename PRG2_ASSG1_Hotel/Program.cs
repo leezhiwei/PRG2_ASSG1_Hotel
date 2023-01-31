@@ -9,6 +9,7 @@ using System.Xml.Linq;
 List<Guest> guestList = new List<Guest>();
 List<Room> availrooms = new List<Room>();
 List<Room> occupiedrooms = new List<Room>();
+List<Food> availableFoodOption = new List<Food>();
 //Initialise Data from csv files
 void InitData()
 {
@@ -798,8 +799,21 @@ void MonthlyCharges()
         break;
     }
 }
-
-
+List<Food> InitFoodList()
+{
+    List<Food> foodList = new List<Food>();
+    Food f1 = new Food("Beef Wellington", 50);
+    Food f2 = new Food("Carbonara Pasta", 25);
+    Food f3 = new Food("Tomato Pasta (Vegeterian)", 20);
+    Food f4 = new Food("Cheese-Baked Rice (Vegeterian)", 11);
+    Food f5 = new Food("Chicken Rice", 15);
+    foodList.Add(f1);
+    foodList.Add(f2 );
+    foodList.Add(f3);
+    foodList.Add(f4);
+    foodList.Add(f5);
+    return foodList;
+}
 void GuestOrderFood()
 {   //Advanced Feature C
     DisplayGuestName(guestList);
@@ -828,7 +842,38 @@ void GuestOrderFood()
             fdChoice = Convert.ToInt32(Console.ReadLine());
             if (fdChoice == 1)
             {
-                Console.Write("Selected Chicken Rice\n------------------\nEnter quantity: ");
+                int loop = 0;
+                Console.WriteLine("Selected Chicken Rice");
+                Console.Write("Enter quantity: ");
+                try
+                {
+                    loop = Convert.ToInt32(Console.ReadLine());
+                }
+                catch
+                {
+                    Console.WriteLine("Input a number. You have entered other characters.");
+                    break;
+                }
+                if (loop < 1)
+                {
+                    Console.WriteLine("Input a valid number more than 1");
+                    break;
+                }
+                if (loop == 1)
+                {
+                    g.HotelStay.RoomServiceForStay.AddFood(availableFoodOption[4]);
+                    Console.WriteLine("Completed successfully.");
+                }
+                else
+                {
+                    for (int x = 1; x < loop; x++)
+                    {
+                        g.HotelStay.RoomServiceForStay.AddFood(availableFoodOption[4]);
+                    }
+                    Console.WriteLine("Completed successfully.");
+                    break;
+                }
+
             }
             else if (fdChoice == 2)
             {
@@ -859,15 +904,42 @@ void GuestOrderFood()
         Console.WriteLine($"\nName of Guest {gName} does not exist.\n");
     }
 }
-
+void ShowRoomServiceObj()
+{
+    int choice = 0;
+    Guest g = null;
+    List<Guest> checkedin = DisplayGuestsCIned(guestList);
+    Console.Write("Select guest to display: ");
+    try
+    {
+        choice = Convert.ToInt32(Console.ReadLine());
+    }
+    catch
+    {
+        Console.WriteLine("Please enter a number.");
+        return;
+    }
+    try
+    {
+        g = checkedin[choice - 1]; 
+    }
+    catch
+    {
+        Console.WriteLine("Out of range of list.");
+        return;
+    }
+    Console.WriteLine(g.HotelStay.RoomServiceForStay.ToString());
+    Console.WriteLine($"Total charge for RoomService: ${g.HotelStay.RoomServiceForStay.CalculateFoodCharges():F2}");
+}
 int entOpt;
 InitData();
+availableFoodOption = InitFoodList();
 while (true)
 {
     try
     {
         Console.WriteLine("------ Hotel Guest Management System ------");
-        Console.WriteLine("[1]. Display all Guests\n[2]. Display all available rooms\n[3]. Register Guest\n[4]. Check-In Guest\n[5]. Check-Out Guest\n[6]. Room Service for Guests\n[7]. Display all details for guest\n[8]. Extend days for stay\n[9]. Display Monthly & Yearly charged amounts\n[0]. Quit Hotal Guest Management System");
+        Console.WriteLine("[1]. Display all Guests\n[2]. Display all available rooms\n[3]. Register Guest\n[4]. Check-In Guest\n[5]. Check-Out Guest\n[6]. Display all details for guest\n[7]. Room Service for Guests\n[8]. Extend days for stay\n[9]. Display Monthly & Yearly charged amounts\n[10]. Display the RoomService Object\n[0]. Quit Hotal Guest Management System");
         Console.Write("-------------------------------------------\nPlease enter your option: ");
         entOpt = Convert.ToInt32(Console.ReadLine());
         if (entOpt == 0)
@@ -903,13 +975,14 @@ while (true)
         else if (entOpt == 6)
         {
             Console.WriteLine("\n--- Displaying name of Guests ---\n");
-            GuestOrderFood();
+            DisplayInfoguest();
         }
         else if (entOpt == 7)
         {
             Console.WriteLine("\n--- Displaying name of Guests ---\n");
-            DisplayInfoguest();
+            GuestOrderFood();
         }
+        
         else if (entOpt == 8)
         {
             Console.WriteLine("\n------ Extending days for stay ------\n");
@@ -920,9 +993,14 @@ while (true)
             Console.WriteLine("\n---- Display monthly & Yearly charged amounts ----\n");
             MonthlyCharges();
         }
+        else if (entOpt == 10)
+        {
+            Console.WriteLine("\n--- Display RoomService Object of Guest ----\n");
+            ShowRoomServiceObj();
+        }
         else
         {
-            Console.WriteLine("\nPlease enter a numeric value from 0 - 9\n");
+            Console.WriteLine("\nPlease enter a numeric value from 0 - 10\n");
         }
     }
     catch (FormatException ex)
