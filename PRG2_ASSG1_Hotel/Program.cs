@@ -1,5 +1,5 @@
-﻿// Zhi Wei does 2,4,6
-// Jia Xian does 1,3,5
+﻿// Zhi Wei does 2,4,6, Advanced A
+// Jia Xian does 1,3,5, Advanced B
 using PRG2_ASSG1_Hotel;
 using System;
 using System.Collections.Generic;
@@ -10,13 +10,13 @@ List<Guest> guestList = new List<Guest>();
 List<Room> availrooms = new List<Room>();
 List<Room> occupiedrooms = new List<Room>();
 List<Food> availableFoodOption = new List<Food>();
-//Initialise Data from csv files
+//Initialise Data from CSV
 void InitData()
 {
     List<List<string>> roomlist = new List<List<string>>();
     List<List<string>> guestlist = new List<List<string>>(); // init string-list var
     List<List<string>> stayslist = new List<List<string>>();
-    //Reading data from csv
+    //Reading data from CSV files
     string[] roomdata = File.ReadAllLines("Rooms.csv");
     string[] guestdata = File.ReadAllLines("Guests.csv"); // readalllines of CSV
     string[] staysdata = File.ReadAllLines("Stays.csv");
@@ -214,12 +214,12 @@ void RegisterGuest() //Created by Lim Jia Xian
         Console.Write("Guest name: ");
         gName = Console.ReadLine();
 
-        if (ValidateNameCheck(gName) == false) //Checks if name entered was filled with numbers.
+        if (ValidateNameCheck(gName) == false) //Checks if name entered was filled with numbers or special characters.
         {
             Console.WriteLine("\nName should not contain any numbers or special characters.\n");
             continue;
         }
-        else if (gName == null || gName.Length < 3 || gName.Trim().Length < 3) //If the name entered is empty or less than 3 characters or name filled with spaces
+        else if (gName.Length < 3 || gName.Trim().Length < 3) //If the name entered is empty or less than 3 characters or name filled with spaces
         {
             Console.WriteLine("\nThe guest name should not be empty or less than 3 characters in length. Please try again!\n");
             continue;
@@ -538,16 +538,16 @@ void DisplayInfoguest() //Created by Lim Jia Xian
 
     foreach (Guest g in guestList)
     {
-        if (gName.ToUpper() == g.Name.ToUpper())
+        if (gName.ToUpper() == g.Name.ToUpper()) //Checks if name entered matches any names in record
         {
             gFound = true;
             Console.WriteLine($"\n--- All details of guest {g.Name} ---\n");
             Console.WriteLine($"Name: {g.Name}, Passport number: {g.PassportNum}, Membership {g.Member.ToString()}\n");
-            if (g.HotelStay.CheckInDate == Convert.ToDateTime("1/1/0001 12:00:00 am") || g.HotelStay.CheckOutDate == Convert.ToDateTime("1/1/0001 12:00:00 am"))
+            if (g.HotelStay.CheckInDate == Convert.ToDateTime("1/1/0001 12:00:00 am") || g.HotelStay.CheckOutDate == Convert.ToDateTime("1/1/0001 12:00:00 am")) //Checks if check-in date and check-out date is invalid
             {
                 Console.WriteLine("Guest has no stay information.");
             }
-            else
+            else //If there are valid check-in & check-out dates, display hotel stay information with check in status
             {
                 Console.WriteLine($"{g.HotelStay}");
                 Console.WriteLine($"\nCheck in status: {g.IsCheckedin}");
@@ -559,7 +559,7 @@ void DisplayInfoguest() //Created by Lim Jia Xian
             gFound= false;
         }
     }
-    if (gFound == false)
+    if (gFound == false) //If Guest found is false, display guest does not exist
     {
         Console.WriteLine($"\nName of Guest {gName} does not exist.\n");
     }
@@ -640,13 +640,13 @@ void CheckOutGuest() //Created by Lim Jia Xian
 
     foreach (Guest g in guestList)
     {
-        if (gName.ToUpper() == g.Name.ToUpper() && g.IsCheckedin == false) //Checks for guest name and guest check in status
+        if (gName.ToUpper() == g.Name.ToUpper() && g.IsCheckedin == false) //Checks for guest name and guest check in status. If guest name found is not checked in, display the message
         {
             Console.WriteLine($"\nUnable to check out!\nGuest of the name {gName} is not checked in yet.\n");
             gFound = true; //Guest found is considered to be true, just that the guest is not able to check out at this moment.
             break;
         }
-        else
+        else //If guest is 
         {
             if (gName.ToUpper() == g.Name.ToUpper()) //Checks for guest name
             {
@@ -744,7 +744,7 @@ void CheckOutGuest() //Created by Lim Jia Xian
     Console.WriteLine();
 }
 void MonthlyCharges()
-{
+{   //Advanced Feature A, Lee Zhi Wei
     List<string> months = new List<String>{"January", "February", "March", "April", "May",
     "June", "July", "August", "September", "October", "November", "December"};
     while (true)
