@@ -1234,7 +1234,7 @@ while (true)
         }
         else
         {
-            Console.WriteLine("\nPlease enter a numeric value from 0 - 10\n");
+            Console.WriteLine("\nPlease enter a numeric value from 0 - 11\n");
         }
     }
     catch (FormatException ex)
