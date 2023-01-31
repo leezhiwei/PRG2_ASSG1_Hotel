@@ -197,9 +197,9 @@ Guest SearchG(List<Guest> guestList, string gName) //Created by Lim Jia Xian
 {   //Searches for the name if it matches the records in guest list
     foreach (Guest g in guestList)
     {
-        if (g.Name.ToUpper() == gName.ToUpper())
+        if (g.Name.ToUpper() == gName.ToUpper()) //If guest name is found
         {
-            return g;
+            return g; //Return Guest Object
         }
     }
     return null;
@@ -209,9 +209,9 @@ Guest SearchPN(List<Guest> guestList, string gPN) //Created by Lim Jia Xian
 {   //Searches for the passport number if it matches the records in guest list
     foreach (Guest g in guestList)
     {
-        if (g.PassportNum.ToUpper() == gPN.ToUpper())
+        if (g.PassportNum.ToUpper() == gPN.ToUpper()) //If guest passport number is found
         {
-            return g;
+            return g; //Return Guest Object
         }
     }
     return null;
@@ -555,29 +555,23 @@ void DisplayInfoguest() //Created by Lim Jia Xian
         break;
     }
 
-    foreach (Guest g in guestList)
+    Guest guestN = SearchG(guestList, gName); //Searches the guest name
+    if (guestN != null) //Checks if the name matches any records in guest list, if so it will not return a null value. 
     {
-        if (gName.ToUpper() == g.Name.ToUpper()) //Checks if name entered matches any names in record
+        gFound = true; //Guest name duplicate changes to true
+        Console.WriteLine($"\n--- All details of guest {guestN.Name} ---\n");
+        Console.WriteLine($"Name: {guestN.Name}, Passport number: {guestN.PassportNum}, Membership {guestN.Member.ToString()}\n");
+        if (guestN.HotelStay.CheckInDate == Convert.ToDateTime("1/1/0001 12:00:00 am") || guestN.HotelStay.CheckOutDate == Convert.ToDateTime("1/1/0001 12:00:00 am")) //Checks if check-in date and check-out date is invalid
         {
-            gFound = true;
-            Console.WriteLine($"\n--- All details of guest {g.Name} ---\n");
-            Console.WriteLine($"Name: {g.Name}, Passport number: {g.PassportNum}, Membership {g.Member.ToString()}\n");
-            if (g.HotelStay.CheckInDate == Convert.ToDateTime("1/1/0001 12:00:00 am") || g.HotelStay.CheckOutDate == Convert.ToDateTime("1/1/0001 12:00:00 am")) //Checks if check-in date and check-out date is invalid
-            {
-                Console.WriteLine("Guest has no stay information.");
-            }
-            else //If there are valid check-in & check-out dates, display hotel stay information with check in status
-            {
-                Console.WriteLine($"{g.HotelStay}");
-                Console.WriteLine($"\nCheck in status: {g.IsCheckedin}");
-            }
-            break;
+            Console.WriteLine("Guest has no stay information.");
         }
-        else
+        else //If there are valid check-in & check-out dates, display hotel stay information with check in status
         {
-            gFound= false;
+            Console.WriteLine($"{guestN.HotelStay}");
+            Console.WriteLine($"\nCheck in status: {guestN.IsCheckedin}");
         }
     }
+
     if (gFound == false) //If Guest found is false, display guest does not exist
     {
         Console.WriteLine($"\nName of Guest {gName} does not exist.\n");
