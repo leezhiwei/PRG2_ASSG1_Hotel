@@ -721,7 +721,7 @@ void CheckOutGuest() //Created by Lim Jia Xian
                     Console.WriteLine($"\nCurrent membership points: {g.Member.Points}");
                 }
                 g.IsCheckedin = false; //Update guest check in status to false
-                Console.WriteLine($"\n--- Guest name {g.Name} check-out successful ---\n");
+                Console.WriteLine($"\n--- Guest name {g.Name} Check-Out successful ---\n");
                 break;
             }
             else
@@ -945,7 +945,7 @@ while (true)
     try
     {
         Console.WriteLine("------ Hotel Guest Management System ------");
-        Console.WriteLine("[1]. Display all Guests\n[2]. Display all available rooms\n[3]. Register Guest\n[4]. Check-In Guest\n[5]. Check-Out Guest\n[6]. Display all details for guest\n[7]. Room Service for Guests\n[8]. Extend days for stay\n[9]. Display Monthly & Yearly charged amounts\n[10]. Display the RoomService Object\n[0]. Quit Hotal Guest Management System");
+        Console.WriteLine("[1].  Display all Guests\n[2].  Display all available rooms\n[3].  Register Guest\n[4].  Check-In Guest\n[5].  Display all details for guest\n[6].  Extend days for stay\n[7].  Display Monthly & Yearly charged amounts\n[8].  Check-Out Guest\n[9].  Room Service for Guests\n[10]. Display the RoomService Object\n[0].  Quit Hotal Guest Management System");
         Console.Write("-------------------------------------------\nPlease enter your option: ");
         entOpt = Convert.ToInt32(Console.ReadLine());
         if (entOpt == 0)
@@ -975,29 +975,29 @@ while (true)
         }
         else if (entOpt == 5)
         {
-            Console.WriteLine("\n------ Guest Check-OUT ------\n");
-            CheckOutGuest();
-        }
-        else if (entOpt == 6)
-        {
             Console.WriteLine("\n--- Displaying name of Guests ---\n");
             DisplayInfoguest();
         }
-        else if (entOpt == 7)
-        {
-            Console.WriteLine("\n--- Displaying name of Guests ---\n");
-            GuestOrderFood();
-        }
-        
-        else if (entOpt == 8)
+        else if (entOpt == 6)
         {
             Console.WriteLine("\n------ Extending days for stay ------\n");
             ExtendStay();
         }
-        else if (entOpt == 9)
+        else if (entOpt == 7)
         {
             Console.WriteLine("\n---- Display monthly & Yearly charged amounts ----\n");
             MonthlyCharges();
+        }
+        
+        else if (entOpt == 8)
+        {
+            Console.WriteLine("\n------ Guest Check-OUT ------\n");
+            CheckOutGuest();
+        }
+        else if (entOpt == 9)
+        {
+            Console.WriteLine("\n--- Displaying name of Guests ---\n");
+            GuestOrderFood();
         }
         else if (entOpt == 10)
         {
@@ -1014,3 +1014,8 @@ while (true)
         Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 9\n");
     }
 }
+
+//8
+
+
+//Display roomservice for guest
