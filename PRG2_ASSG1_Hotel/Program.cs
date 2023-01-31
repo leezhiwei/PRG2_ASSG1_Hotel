@@ -870,7 +870,7 @@ void GuestOrderFood()
                 Console.WriteLine("Guest not checked in."); // error return
                 return;
             }
-            Console.Write("\n------ Displaying Food Options -------\n[1]. Chicken Rice\n[2]. Beef Wellington\n[3]. Carbonara Pasta\n[4]. Tomato Pasta (Vegetarian)\n[5]. Cheese-Baked Rice (Vegetarian)\n--------------------------------------\nPlease enter your Food Choice: ");
+            Console.Write("\n----------- Displaying Food Options ------------\n[1]. Chicken Rice, Price: $15\n[2]. Beef Wellington, Price: $50\n[3]. Carbonara Pasta, Price: $25\n[4]. Tomato Pasta (Vegetarian), Price: $20\n[5]. Cheese-Baked Rice (Vegetarian), Price: $11\n------------------------------------------------\nPlease enter your Food Choice: ");
             // food options
             try
             {
