@@ -11,7 +11,7 @@ List<Room> availrooms = new List<Room>();
 List<Room> occupiedrooms = new List<Room>();
 List<Food> availableFoodOption = new List<Food>();
 //Initialise Data from CSV
-void InitData()
+void InitData() 
 {
     List<List<string>> roomlist = new List<List<string>>();
     List<List<string>> guestlist = new List<List<string>>(); // init string-list var
