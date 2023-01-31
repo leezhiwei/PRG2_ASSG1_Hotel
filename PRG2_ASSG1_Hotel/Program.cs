@@ -479,6 +479,11 @@ void CheckIn(List<Guest> glist)
             Console.WriteLine("Invalid date format.");
             continue;
         }
+        if (cindate > coutdate)
+        {// check if checkout date before checkin
+            Console.WriteLine("Check-In date must be before check-out.");
+            continue;
+        }
         Stay stay = new Stay(cindate, coutdate); // make new stay object
         finalobj = AvailRoomSel(); // call the available room method
         if (finalobj is null) // if failed (object is null)
@@ -564,6 +569,7 @@ void ExtendStay()
 { // Lee Zhi Wei
     List<Guest> checkedin = DisplayGuestsCIned(guestList); // get how many people checked-in
     Guest pickedg = null; // picked-guest variable to null
+    int realindex = 0; // real index from real guestlist
     int choice = -1; // set choice 
     Console.Write("Please enter which guest to extend stay: "); // prompt
     try
@@ -589,6 +595,7 @@ void ExtendStay()
         Console.WriteLine("You are not checked in yet.");
         return;
     }
+    realindex = guestList.IndexOf(pickedg); // get real index from guestList
     Stay s = pickedg.HotelStay; // store the stay from guest into temp var
     Console.Write("How many days do you want to extend stay by? "); // prompt for how many days to extend
     int days = 0; // int var
@@ -607,7 +614,7 @@ void ExtendStay()
         return;
     }
     s.CheckOutDate = s.CheckOutDate.AddDays(days); // add days to check-out date
-    guestList[choice - 1] = pickedg; // put back manipulated object
+    guestList[realindex] = pickedg; // put back manipulated object
     Console.WriteLine($"Date has been updated to {s.CheckOutDate.ToString()}"); // print success msg
     return; // end the function
 }
@@ -1014,8 +1021,3 @@ while (true)
         Console.WriteLine($"\nIncorrect values! {ex.Message} Please try again with numeric values from 0 - 9\n");
     }
 }
-
-//8
-
-
-//Display roomservice for guest
