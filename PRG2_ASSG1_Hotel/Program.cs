@@ -765,6 +765,7 @@ void MonthlyCharges()
     "June", "July", "August", "September", "October", "November", "December"};
     while (true)
     {
+        double yearlytotal = 0;
         int year = 0;
         Console.Write("Enter the year ");
         try
@@ -818,7 +819,9 @@ void MonthlyCharges()
                 }
             }
             Console.WriteLine($"{months[mthEnd.Month-1]} {year}: ${totalcharge:F2}");
+            yearlytotal += totalcharge;
         }
+        Console.WriteLine($"Total: ${yearlytotal:F2}");
         break;
     }
 }
