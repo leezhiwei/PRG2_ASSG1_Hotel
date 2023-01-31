@@ -55,93 +55,99 @@ void InitData()
                             if (r[0] == "Standard") // if type is standard
                             {
                                 StandardRoom room = new StandardRoom(Convert.ToInt32(r[1]), r[2], Convert.ToDouble(r[3]), !(Convert.ToBoolean(bookings[2])));
+                                // make standardroom obj, set bools
                                 room.RequireWifi = Convert.ToBoolean(bookings[10]);
                                 room.RequireBreakfast = Convert.ToBoolean(bookings[11]);
-                                secroom = room;
+                                secroom = room; // set to secroom var
 
                             }
                             else if (rooms[0] == "Deluxe") // if type is deluxe
                             {
                                 DeluxeRoom room = new DeluxeRoom(Convert.ToInt32(r[1]), r[2], Convert.ToDouble(r[3]), !(Convert.ToBoolean(bookings[2])));
+                                // make deluxeroom obj, set bools
                                 room.AdditionalBed = Convert.ToBoolean(bookings[12]);
-                                secroom = room;
+                                secroom = room; // set to secroom var
                             }
                         }
                     }
                 }
-                if (rooms[0] == "Standard") // if type is standard
+                if (rooms[0] == "Standard") // if type is standard (for 1)
                 {
                     StandardRoom room = new StandardRoom(Convert.ToInt32(rooms[1]), rooms[2], Convert.ToDouble(rooms[3]), !(Convert.ToBoolean(bookings[2])));
+                    // make standardroom, obj, set bools
                     room.RequireWifi = Convert.ToBoolean(bookings[6]);
                     room.RequireBreakfast = Convert.ToBoolean(bookings[7]);
-                    book.AddRoom(room);
-                    occupiedrooms.Add(room);
+                    book.AddRoom(room); // add to stays
+                    occupiedrooms.Add(room); // add to occupiedrooms
 
                 }
-                else if (rooms[0] == "Deluxe") // if type is deluxe
+                else if (rooms[0] == "Deluxe") // if type is deluxe (for 1)
                 {
                     DeluxeRoom room = new DeluxeRoom(Convert.ToInt32(rooms[1]), rooms[2], Convert.ToDouble(rooms[3]), !(Convert.ToBoolean(bookings[2])));
+                    // make deluxeroom obj, set bools
                     room.AdditionalBed = Convert.ToBoolean(bookings[12]);
-                    book.AddRoom(room);
-                    occupiedrooms.Add(room);
+                    book.AddRoom(room); // add to stays
+                    occupiedrooms.Add(room); // add to occupiedrooms
                 }
                 if (secroom is not null)
-                {
-                    book.AddRoom(secroom);
-                    occupiedrooms.Add(secroom);
+                { // if secroom not empty
+                    book.AddRoom(secroom); // add stays
+                    occupiedrooms.Add(secroom); // add occupiedrooms
                 }
-                foreach (List<string> guestprof in guestlist)
+                foreach (List<string> guestprof in guestlist) // for guest profile in list
                 {
-                    if (guestprof[1] == bookings[1])
+                    if (guestprof[1] == bookings[1]) // matches
                     {
                         Membership m = new Membership(guestprof[2], Convert.ToInt32(guestprof[3]));
+                        // new membership
                         Guest guestobj = new Guest(guestprof[0], guestprof[1], book, m);
-                        guestobj.IsCheckedin = Convert.ToBoolean(bookings[2]);
-                        guestList.Add(guestobj);
+                        // new guest
+                        guestobj.IsCheckedin = Convert.ToBoolean(bookings[2]); // set bool
+                        guestList.Add(guestobj); // add to guestlist
                     }
                 }
             }
         }
     }
-    availrooms = AvailRoom();
+    availrooms = AvailRoom(); // get available room list
     foreach (List<string> ro in roomlist) // add in other avail rooms
     {
         bool isInList = false;
-        bool occupied = false;
+        bool occupied = false; // set booleans
         foreach (Room room in availrooms)
         {
-            if (room.RoomNumber == Convert.ToInt32(ro[1]))
+            if (room.RoomNumber == Convert.ToInt32(ro[1])) // if already in
             {
-                isInList = true;
-                break;
+                isInList = true; // set bool
+                break; // break
             }
         }
-        if (isInList)
+        if (isInList) // if already in list
         {
-            continue;
+            continue; // continue list
         }
         foreach (Room or in occupiedrooms)
-        {
-            if (or.RoomNumber == Convert.ToInt32(ro[1]))
+        { // for room in occupiedrooms
+            if (or.RoomNumber == Convert.ToInt32(ro[1])) // matches with loop
             {
-                occupied = true;
-                break;
+                occupied = true; // occupied flag true
+                break; // break loop
             }
         }
-        if (occupied)
+        if (occupied) // if occupied
         {
-            continue;
+            continue; // continue loop
         }
         if (ro[0] == "Standard") // if type is standard
-        {
+        { // else not occupied or already in list
             StandardRoom room = new StandardRoom(Convert.ToInt32(ro[1]), ro[2], Convert.ToDouble(ro[3]), true);
-            availrooms.Add(room);
+            availrooms.Add(room); //create and add
 
         }
         else if (ro[0] == "Deluxe") // if type is deluxe
-        {
+        { // else not occupied or already in list
             DeluxeRoom room = new DeluxeRoom(Convert.ToInt32(ro[1]), ro[2], Convert.ToDouble(ro[3]), true);
-            availrooms.Add(room);
+            availrooms.Add(room); // create and add
         }
     }
 }
@@ -756,83 +762,84 @@ void CheckOutGuest() //Created by Lim Jia Xian
 void MonthlyCharges()
 {   //Advanced Feature A, Lee Zhi Wei
     List<string> months = new List<String>{"January", "February", "March", "April", "May",
-    "June", "July", "August", "September", "October", "November", "December"};
+    "June", "July", "August", "September", "October", "November", "December"}; // months list
     while (true)
-    {
-        double yearlytotal = 0;
+    { // input loop
+        double yearlytotal = 0; // init vars
         int year = 0;
-        Console.Write("Enter the year: ");
+        Console.Write("Enter the year: "); // enter year
         try
-        {
+        { // if cannot convert to int
             year = Convert.ToInt32(Console.ReadLine());
         }
         catch
-        {
+        { // error message, continue
             Console.WriteLine("Invalid year, you have typed in an unknown input, please input a number.");
             continue;
         }
         if (year <= 1000 || year >= 9999)
-        {
-            Console.WriteLine("Invalid Year. Please try again.");
-            continue;
+        { // if year less than 1000 and more than 999 (invalid years)
+            Console.WriteLine("Invalid Year. Please try again.");  // error
+            continue; // continue
         }
         
-        bool leapyear = false;
+        bool leapyear = false; // boolean init
         if (year % 4  == 0)
-        {
+        { // if leapyear set bool
             leapyear = true;
         }
-        List<int> thirtyfirstmths = new List<int> { 1, 3, 5, 7, 8, 10, 12 };
+        List<int> thirtyfirstmths = new List<int> { 1, 3, 5, 7, 8, 10, 12 }; // mths with 31 days
         for (int mth = 1; mth <= 12; mth++)
-        {
-            int endDay = 30;
-            double totalcharge = 0;
+        { // for 12 months in year
+            int endDay = 30; // default end day 30
+            double totalcharge = 0; // totalcharge var init
             if (mth == 2)
-            {
+            { // if feb
                 if (leapyear)
-                {
+                { // if leap year, 29
                     endDay = 29;
                 }
                 else
-                {
+                { // else 28
                     endDay = 28;
                 }
             }
             else if (thirtyfirstmths.Contains(mth))
-            {
+            { // if in the list of 31 days year, set endday to 31
                 endDay = 31;
             }
-            DateTime mthStart = Convert.ToDateTime($"1/{mth}/{year}");
-            DateTime mthEnd = Convert.ToDateTime($"{endDay}/{mth}/{year}");
+            DateTime mthStart = Convert.ToDateTime($"1/{mth}/{year}"); // first day of month
+            DateTime mthEnd = Convert.ToDateTime($"{endDay}/{mth}/{year}"); // last day of month
             foreach (Guest g in guestList)
-            {
-                Stay s = g.HotelStay;
+            { // foreach guest
+                Stay s = g.HotelStay; // get stay object
                 if (s.CheckOutDate <= mthEnd && s.CheckOutDate >= mthStart)
-                {
-                    totalcharge += s.CalculateTotal();
+                { // if within period of month
+                    totalcharge += s.CalculateTotal(); // add to total
                 }
             }
-            Console.WriteLine($"{months[mthEnd.Month-1]} {year}: ${totalcharge:F2}");
-            yearlytotal += totalcharge;
+            Console.WriteLine($"{months[mthEnd.Month - 1]} {year}: ${totalcharge:F2}");
+            // write month year, eg Jan 2023
+            yearlytotal += totalcharge; // add to yearly charge, eg total for year
         }
-        Console.WriteLine($"Total: ${yearlytotal:F2}");
-        break;
+        Console.WriteLine($"Total: ${yearlytotal:F2}"); // print total for year
+        break; // break out
     }
 }
 List<Food> InitFoodList()
-{
-    List<Food> foodList = new List<Food>();
+{ // Lee Zhi Wei
+    List<Food> foodList = new List<Food>(); // list of food
     Food f1 = new Food("Beef Wellington", 50);
     Food f2 = new Food("Carbonara Pasta", 25);
-    Food f3 = new Food("Tomato Pasta (Vegeterian)", 20);
+    Food f3 = new Food("Tomato Pasta (Vegeterian)", 20); // add in dishes
     Food f4 = new Food("Cheese-Baked Rice (Vegeterian)", 11);
     Food f5 = new Food("Chicken Rice", 15);
     foodList.Add(f1);
-    foodList.Add(f2 );
-    foodList.Add(f3);
+    foodList.Add(f2);
+    foodList.Add(f3); // add into return list
     foodList.Add(f4);
     foodList.Add(f5);
-    return foodList;
+    return foodList; // return list
 }
 void GuestOrderFood()
 {   //Advanced Feature C, created by both students
@@ -1059,31 +1066,99 @@ void GuestOrderFood()
     }
 }
 void ShowRoomServiceObj()
-{
-    int choice = 0;
-    Guest g = null;
-    List<Guest> checkedin = DisplayGuestsCIned(guestList);
-    Console.Write("Select guest to display: ");
+{ // Lee Zhi Wei
+    int choice = 0; // init choice
+    Guest g = null; // init guest
+    List<Guest> checkedin = DisplayGuestsCIned(guestList); // display checked in guest, put into list for select
+    Console.Write("Select guest to display: "); // input
     try
-    {
+    { // convert to int
         choice = Convert.ToInt32(Console.ReadLine());
     }
     catch
-    {
+    { // if cannot print error, return
         Console.WriteLine("Please enter a number.");
         return;
     }
     try
-    {
+    { // try get object
         g = checkedin[choice - 1]; 
     }
     catch
-    {
+    { // if not print error
         Console.WriteLine("Out of range of list.");
         return;
     }
-    Console.WriteLine(g.HotelStay.RoomServiceForStay.ToString());
+    Console.WriteLine(g.HotelStay.RoomServiceForStay.ToString()); // print room service list
     Console.WriteLine($"Total charge for RoomService: ${g.HotelStay.RoomServiceForStay.CalculateFoodCharges():F2}");
+    // print total price
+}
+void MonthlyChargesWithRoomService()
+{   //Advanced Feature A, Lee Zhi Wei
+    List<string> months = new List<String>{"January", "February", "March", "April", "May",
+    "June", "July", "August", "September", "October", "November", "December"}; // months list
+    while (true)
+    { // input loop
+        double yearlytotal = 0; // init vars
+        int year = 0;
+        Console.Write("Enter the year: "); // enter year
+        try
+        { // if cannot convert to int
+            year = Convert.ToInt32(Console.ReadLine());
+        }
+        catch
+        { // error message, continue
+            Console.WriteLine("Invalid year, you have typed in an unknown input, please input a number.");
+            continue;
+        }
+        if (year <= 1000 || year >= 9999)
+        { // if year less than 1000 and more than 999 (invalid years)
+            Console.WriteLine("Invalid Year. Please try again.");  // error
+            continue; // continue
+        }
+
+        bool leapyear = false; // boolean init
+        if (year % 4 == 0)
+        { // if leapyear set bool
+            leapyear = true;
+        }
+        List<int> thirtyfirstmths = new List<int> { 1, 3, 5, 7, 8, 10, 12 }; // mths with 31 days
+        for (int mth = 1; mth <= 12; mth++)
+        { // for 12 months in year
+            int endDay = 30; // default end day 30
+            double totalcharge = 0; // totalcharge var init
+            if (mth == 2)
+            { // if feb
+                if (leapyear)
+                { // if leap year, 29
+                    endDay = 29;
+                }
+                else
+                { // else 28
+                    endDay = 28;
+                }
+            }
+            else if (thirtyfirstmths.Contains(mth))
+            { // if in the list of 31 days year, set endday to 31
+                endDay = 31;
+            }
+            DateTime mthStart = Convert.ToDateTime($"1/{mth}/{year}"); // first day of month
+            DateTime mthEnd = Convert.ToDateTime($"{endDay}/{mth}/{year}"); // last day of month
+            foreach (Guest g in guestList)
+            { // foreach guest
+                Stay s = g.HotelStay; // get stay object
+                if (s.CheckOutDate <= mthEnd && s.CheckOutDate >= mthStart)
+                { // if within period of month
+                    totalcharge += s.CalculateTotalWithRoomService(); // add to total (with room charges)
+                }
+            }
+            Console.WriteLine($"{months[mthEnd.Month - 1]} {year}: ${totalcharge:F2}");
+            // write month year, eg Jan 2023
+            yearlytotal += totalcharge; // add to yearly charge, eg total for year
+        }
+        Console.WriteLine($"Total: ${yearlytotal:F2}"); // print total for year
+        break; // break out
+    }
 }
 
 int entOpt;
@@ -1094,7 +1169,7 @@ while (true)
     try
     {
         Console.WriteLine("------ Hotel Guest Management System ------");
-        Console.WriteLine("[1].  Display all Guests\n[2].  Display all available rooms\n[3].  Register Guest\n[4].  Check-In Guest\n[5].  Display all details for guest\n[6].  Extend days for stay\n[7].  Display Monthly & Yearly charged amounts\n[8].  Check-Out Guest\n[9].  Room Service for Guests\n[10]. Display the RoomService Object\n[0].  Quit Hotal Guest Management System");
+        Console.WriteLine("[1].  Display all Guests\n[2].  Display all available rooms\n[3].  Register Guest\n[4].  Check-In Guest\n[5].  Display all details for guest\n[6].  Extend days for stay\n[7].  Display Monthly & Yearly charged amounts\n[8].  Check-Out Guest\n[9].  Room Service for Guests\n[10]. Display the RoomService Object\n[11]. Display Monthly & Yearly charged amounts (With RoomService)\n[0].  Quit Hotal Guest Management System");
         Console.Write("-------------------------------------------\nPlease enter your option: ");
         entOpt = Convert.ToInt32(Console.ReadLine());
         if (entOpt == 0)
@@ -1137,7 +1212,6 @@ while (true)
             Console.WriteLine("\n---- Display monthly & Yearly charged amounts ----\n");
             MonthlyCharges();
         }
-        
         else if (entOpt == 8)
         {
             Console.WriteLine("\n------ Guest Check-OUT ------\n");
@@ -1152,6 +1226,11 @@ while (true)
         {
             Console.WriteLine("\n--- Display RoomService Object of Guest ----\n");
             ShowRoomServiceObj();
+        }
+        else if (entOpt == 11)
+        {
+            Console.WriteLine("\n---- Display monthly & Yearly charged amounts (With RoomService) ----\n");
+            MonthlyChargesWithRoomService();
         }
         else
         {
