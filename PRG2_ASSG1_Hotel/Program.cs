@@ -680,7 +680,7 @@ void CheckOutGuest() //Created by Lim Jia Xian
                 guestN.Member.RedeemPoints(gPoints);
                 fBill = guestN.HotelStay.CalculateTotal() - gPoints; //Final bill is calculated by total - guest redeem points
                 Console.WriteLine($"Final bill amount: ${fBill}");
-                Console.WriteLine("\n----- Press any KEY to make payment -----\n");
+                Console.WriteLine("\n----- Press ENTER to make payment -----\n");
                 Console.ReadLine();
                 guestN.Member.EarnPoints(fBill); //Earning points based off the final bill
                 if ((fBill / 10) >= 1) //Checks if final bill / 10 returns a value more than 0
@@ -708,7 +708,7 @@ void CheckOutGuest() //Created by Lim Jia Xian
             else
             {
                 Console.WriteLine($"Final bill amount: ${guestN.HotelStay.CalculateTotal()}");
-                Console.WriteLine("\n------ Press any KEY to make payment ------");
+                Console.WriteLine("\n------ Press ENTER to make payment ------");
                 Console.ReadLine();
                 fBill = guestN.HotelStay.CalculateTotal(); //Calculating final bill
                 guestN.Member.EarnPoints(fBill); //Earning points based off final bill
