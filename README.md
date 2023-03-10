@@ -11,4 +11,4 @@ Clone this repository and ``` cd PRG2_ASSG1_Hotel``` then ```dotnet build``` aft
 ## Linux
 Use the package manager of your choice to download the dotnet SDK and Runtime environment. Then ``` cd PRG2_ASSG1_Hotel``` then ```dotnet build``` after ```dotnet run```.
 ## Can I contribute?
-Yes, please oh my. If you want to help me, shoot me and email or my contact methods. I will be sure to get in contact.
+Yes, please oh my. If you want to help me, fork it then push to the main branch. I will be doing some checking as well. Thanks! 
