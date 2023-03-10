@@ -1,5 +1,7 @@
 # PRG2_ASSG1_Hotel
-Hello there fellow visitor, welcome to me and [my fellow partner's](https://github.com/Lim-jiaxian) year 2 semester 2's C# .NET assignment, where we design a hotel booking system (sort of?). A list of requirements were given and we followed it. 
+Hello there fellow visitor, welcome to me and [my fellow partner's](https://github.com/Lim-jiaxian) year 2 semester 2's C# .NET assignment, where we design a hotel booking system (sort of?). A list of requirements were given and we followed it.
+## Build and test statuses each commit
+[![build and test](https://github.com/leezhiwei/PRG2_ASSG1_Hotel/actions/workflows/build-validationandtest.yml/badge.svg)](https://github.com/leezhiwei/PRG2_ASSG1_Hotel/actions/workflows/build-validationandtest.yml) 
 # Requirements from lectures
 TODO.. Add in details later
 # Compilation instructions
